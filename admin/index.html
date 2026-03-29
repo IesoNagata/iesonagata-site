@@ -314,29 +314,16 @@ function uploadThumb(input){
         var ext=file.name.split(".").pop().toLowerCase();
         var name=Date.now()+"."+ext;
         var path="content/uploads/"+date.replace(/-/g,"/")+"/"+name;
-        putFile(path,"",null,"Upload image: "+name).catch(function(){
-            return getFile(path).then(function(existing){
-                var body={message:"Upload image: "+name,content:base64,branch:BRANCH};
-                if(existing)body.sha=existing.sha;
-                return fetch(apiUrl(path),{method:"PUT",headers:hdr(),body:JSON.stringify(body)});
-            });
-        }).then(function(){
+        var body={message:"Upload: "+name,content:base64,branch:BRANCH};
+        fetch(apiUrl(path),{method:"PUT",headers:hdr(),body:JSON.stringify(body)})
+        .then(function(r){if(!r.ok)throw new Error("Falha no upload (HTTP "+r.status+")");return r.json()})
+        .then(function(){
             var url="https://raw.githubusercontent.com/"+REPO+"/"+BRANCH+"/"+path;
             document.getElementById("postThumb").value=url;
             updateThumbPreview();
             showStatus("Imagem enviada!","success");
-        }).catch(function(e){
-            var body={message:"Upload image: "+name,content:base64,branch:BRANCH};
-            fetch(apiUrl(path),{method:"PUT",headers:hdr(),body:JSON.stringify(body)})
-            .then(function(r){if(!r.ok)throw new Error("Falha no upload");return r.json()})
-            .then(function(){
-                var url="https://raw.githubusercontent.com/"+REPO+"/"+BRANCH+"/"+path;
-                document.getElementById("postThumb").value=url;
-                updateThumbPreview();
-                showStatus("Imagem enviada!","success");
-            })
-            .catch(function(e2){showStatus("Erro no upload: "+e2.message,"error")});
-        });
+        })
+        .catch(function(e){showStatus("Erro: "+e.message,"error")});
     };
     reader.readAsDataURL(file);
 }
