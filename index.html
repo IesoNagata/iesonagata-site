@@ -63,9 +63,14 @@ var box=document.getElementById("main-posts");
 if(!box||!posts.length)return;
 var h="";
 var fmtDate=function(d){return d.split("-").reverse().join("/")};
+var fixUrl=function(u){
+if(!u)return"";
+if(u.indexOf("http")===0)return u;
+return"/"+u.replace(/^\//,"");
+};
 var first=posts[0];
 h+='<div class="hero">';
-h+='<a href="'+first.url+'"><img src="'+(first.thumb||"")+'" alt="'+first.title+'"></a>';
+h+='<a href="'+first.url+'"><img src="'+fixUrl(first.thumb)+'" alt="'+first.title+'"></a>';
 h+='<span class="hero-label">Destaque</span>';
 h+='<div class="hero-content">';
 h+='<h1 class="hero-title"><a href="'+first.url+'">'+first.title+'</a></h1>';
@@ -75,7 +80,7 @@ h+='<h2 class="section-title">Ultimas Noticias</h2>';
 h+='<div class="posts-grid">';
 posts.forEach(function(p){
 h+='<article class="post-card">';
-if(p.thumb)h+='<a href="'+p.url+'"><img src="'+p.thumb+'" class="post-card-image" alt="'+p.title+'"></a>';
+if(p.thumb)h+='<a href="'+p.url+'"><img src="'+fixUrl(p.thumb)+'" class="post-card-image" alt="'+p.title+'"></a>';
 h+='<div class="post-card-content">';
 h+='<div class="post-card-source"><span class="post-card-source-icon">IN</span>ieso nagata</div>';
 h+='<h3 class="post-card-title"><a href="'+p.url+'">'+p.title+'</a></h3>';
