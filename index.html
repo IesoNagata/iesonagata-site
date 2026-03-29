@@ -36,24 +36,7 @@
 
     <main class="site-main">
 
-        <div class="sidebar sidebar-left">
-            <div class="sidebar-section">
-                <h3 class="sidebar-title">Categorias</h3>
-                <ul class="sidebar-menu">
-                    <li><a href="#">Sem categoria</a></li>
-                </ul>
-            </div>
-            <div class="sidebar-section">
-                <h3 class="sidebar-title">Tech News</h3>
-                <ul class="sidebar-menu">
-                    <li><a href="#">OpenAI lança GPT-5 com capacidades multimodais avançadas</a></li>
-                    <li><a href="#">Linux Kernel 6.8 traz melhorias significativas para jogos</a></li>
-                    <li><a href="#">Proxmox VE 9.0 anunciado com suporte a clustering nativo</a></li>
-                    <li><a href="#">GitHub Copilot agora gera testes unitários automaticamente</a></li>
-                    <li><a href="#">Valve atualiza Steam Deck com novo sistema operacional</a></li>
-                </ul>
-            </div>
-        </div>
+        <div class="sidebar sidebar-left" id="sidebar-left"></div>
 
         <div class="main-content">
 
@@ -168,40 +151,7 @@
             </div>
         </div>
 
-        <div class="sidebar sidebar-right">
-            <div class="trending-section">
-                <h3 class="sidebar-title">Em Alta</h3>
-                <ol class="trending-list">
-                    <li><a href="/2026/03/15/do-cansaco-ao-codigo-como-um-domingo-de-folga-virou-um-projeto-de-software/">Do Cansaço ao Código</a></li>
-                    <li><a href="/2026/02/27/conheca-o-cubecoders-amp-o-painel-de-controle-definitivo-para-seus-servidores-de-jogos/">CubeCoders AMP</a></li>
-                    <li><a href="/2026/02/20/proxmox-arma-reforger-e-wordpress/">Proxmox, Arma Reforger e WordPress</a></li>
-                    <li><a href="/2026/03/08/jogatina-armareforger/">Jogatina #ArmaReforger</a></li>
-                    <li><a href="/2026/02/20/ksk-rostov-mais-uma-guerra-iniciada/">KSK Rostov</a></li>
-                </ol>
-            </div>
-
-            <div class="trending-section">
-                <h3 class="sidebar-title">Tags</h3>
-                <div class="tags-cloud">
-                    <a href="#" class="tag-link">arma reforger</a>
-                    <a href="#" class="tag-link">game server</a>
-                    <a href="#" class="tag-link">linux</a>
-                    <a href="#" class="tag-link">games</a>
-                    <a href="#" class="tag-link">proxmox</a>
-                    <a href="#" class="tag-link">cube coders</a>
-                    <a href="#" class="tag-link">AMP</a>
-                </div>
-            </div>
-
-            <div class="trending-section">
-                <h3 class="sidebar-title">Siga-nos</h3>
-                <ul class="sidebar-menu social-menu">
-                    <li><a href="https://www.facebook.com/IesoNagata" target="_blank" rel="noopener">Facebook</a></li>
-                    <li><a href="https://www.youtube.com/@iesonagata" target="_blank" rel="noopener">YouTube</a></li>
-                    <li><a href="https://www.instagram.com/iesonagata/" target="_blank" rel="noopener">Instagram</a></li>
-                </ul>
-            </div>
-        </div>
+        <div class="sidebar sidebar-right" id="sidebar-right"></div>
 
     </main>
 
@@ -212,5 +162,6 @@
     </footer>
 </div>
 
+<script src="js/sidebar.js"></script>
 </body>
 </html>
