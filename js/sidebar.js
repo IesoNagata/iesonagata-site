@@ -72,9 +72,7 @@ if(navigator.geolocation){
 }else{
   updateWeather(0,28,"S\u00e3o Paulo, SP");
 }
-fetch(base+"js/posts.json")
-.then(function(resp){return resp.json()})
-.then(function(posts){
+window.populateSidebarPosts=function(posts){
 var pl=document.getElementById("posts-list");
 if(pl){
 var html="";
@@ -99,7 +97,11 @@ th+='<a href="'+base+'tags/?tag='+encodeURIComponent(k)+'" class="tag-link">'+ta
 });
 tc.innerHTML=th;
 }
-});
+};
+fetch(base+"js/posts.json")
+.then(function(resp){return resp.json()})
+.then(function(posts){window.populateSidebarPosts(posts)})
+.catch(function(){});
 var rssUrl=encodeURIComponent("https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtVnVHZ0pWVXlnQVAB?hl=pt-BR&gl=BR&ceid=BR:pt-419");
 fetch("https://api.rss2json.com/v1/api.json?rss_url="+rssUrl+"&count=10")
 .then(function(r){return r.json()})
