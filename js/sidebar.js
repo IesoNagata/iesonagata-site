@@ -5,25 +5,24 @@ var l=document.getElementById("sidebar-left");
 if(l)l.innerHTML=leftHTML;
 var r=document.getElementById("sidebar-right");
 if(r)r.innerHTML=rightHTML;
-var rssUrl="https://news.google.com/rss/topics/CAAqLAgKIiZDQkFTRmdvSkwyMHZNR1ptZHpWbUVnVndkQzFDVWhvQ1FsSW9BQVAB?hl=pt-BR&gl=BR&ceid=BR:pt-419";
-var proxy="https://api.allorigins.win/raw?url=";
-fetch(proxy+encodeURIComponent(rssUrl))
-.then(function(r){return r.text()})
-.then(function(xml){
-var parser=new DOMParser();
-var doc=parser.parseFromString(xml,"text/xml");
-var items=doc.querySelectorAll("item");
+var rssUrl=encodeURIComponent("https://news.google.com/rss/topics/CAAqLAgKIiZDQkFTRmdvSkwyMHZNR1ptZHpWbUVnVndkQzFDVWhvQ1FsSW9BQVAB?hl=pt-BR&gl=BR&ceid=BR:pt-419");
+fetch("https://api.rss2json.com/v1/api.json?rss_url="+rssUrl+"&count=10")
+.then(function(r){return r.json()})
+.then(function(data){
 var list=document.getElementById("tech-news-list");
 if(!list)return;
+if(data.status==="ok"&&data.items&&data.items.length>0){
 var html="";
-var count=Math.min(items.length,10);
+var count=Math.min(data.items.length,10);
 for(var i=0;i<count;i++){
-var title=items[i].querySelector("title");
-var link=items[i].querySelector("link");
-if(title&&link){
-html+='<li><a href="'+link.textContent+'" target="_blank" rel="noopener">'+title.textContent+'</a></li>';
-}}
-if(html)list.innerHTML=html;
+var t=data.items[i].title;
+var l=data.items[i].link;
+html+='<li><a href="'+l+'" target="_blank" rel="noopener">'+t+'</a></li>';
+}
+list.innerHTML=html;
+}else{
+list.innerHTML='<li><a href="https://news.google.com/topics/CAAqLAgKIiZDQkFTRmdvSkwyMHZNR1ptZHpWbUVnVndkQzFDVWhvQ1FsSW9BQVAB?hl=pt-BR&gl=BR&ceid=BR%3Apt-419" target="_blank" rel="noopener">Ver no Google News</a></li>';
+}
 })
 .catch(function(){
 var list=document.getElementById("tech-news-list");
