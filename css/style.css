@@ -1051,9 +1051,17 @@ img {
     .site-main {
         grid-template-columns: 1fr 1fr;
     }
-    
+
     .sidebar-right {
-        display: none;
+        grid-column: 1 / -1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .sidebar-right .trending-section {
+        flex: 1 1 300px;
+        margin-bottom: 0;
     }
 }
 
