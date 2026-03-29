@@ -54,6 +54,8 @@
     .toolbar button{background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e6edf3;padding:.4rem .7rem;cursor:pointer;font-size:.8rem;min-width:32px}
     .toolbar button:hover{background:#30363d}
     .toolbar select{background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e6edf3;padding:.3rem .5rem;font-size:.8rem;cursor:pointer}
+    .toolbar label{background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e6edf3;padding:.4rem .7rem;cursor:pointer;font-size:.8rem}
+    .toolbar label:hover{background:#30363d}
     .toolbar .sep{width:1px;background:#30363d;margin:0 .25rem}
     .rte{min-height:350px;padding:1rem;background:#0d1117;border:1px solid #30363d;border-radius:0 0 6px 6px;color:#e6edf3;font-size:.95rem;line-height:1.7;outline:none;overflow-y:auto}
     .rte:focus{border-color:#58a6ff}
@@ -77,7 +79,7 @@
     .thumb-row{display:flex;gap:.5rem;align-items:flex-end}
     .thumb-row input{flex:1}
     .thumb-row label.btn{margin-bottom:0;white-space:nowrap}
-    .thumb-row input[type=file]{display:none}
+    .thumb-row input[type=file],input[type=file].hidden-file{display:none}
     .thumb-preview{margin-top:.5rem}
     .thumb-preview img{max-width:200px;max-height:120px;border-radius:6px;border:1px solid #30363d}
     </style>
@@ -118,7 +120,6 @@
             <div class="editor">
                 <h2 id="editorTitle">Nova Postagem</h2>
                 <input type="hidden" id="editSlug" value="">
-                <input type="hidden" id="editThumbSha" value="">
                 <div class="form-group">
                     <label>Titulo</label>
                     <input type="text" id="postTitle" placeholder="Titulo da postagem">
@@ -137,9 +138,9 @@
                 <div class="form-group">
                     <label>Thumbnail</label>
                     <div class="thumb-row">
-                        <input type="text" id="postThumb" placeholder="URL da imagem ou envie um arquivo">
+                        <input type="text" id="postThumb" placeholder="URL da imagem">
                         <label class="btn btn-secondary" for="thumbFile">Enviar Imagem</label>
-                        <input type="file" id="thumbFile" accept="image/*" onchange="uploadThumb(this)">
+                        <input type="file" id="thumbFile" accept="image/*" onchange="handleUpload(this,'thumb')">
                     </div>
                     <div id="thumbPreview" class="thumb-preview"></div>
                 </div>
@@ -163,7 +164,8 @@
                         <button onclick="execCmd('insertOrderedList')" title="Lista numerada">1. Lista</button>
                         <div class="sep"></div>
                         <button onclick="showLinkModal()" title="Link">&#128279;</button>
-                        <button onclick="insertImage()" title="Imagem">&#128247;</button>
+                        <label for="contentImgFile" title="Enviar Imagem">&#128247;</label>
+                        <input type="file" id="contentImgFile" class="hidden-file" accept="image/*" onchange="handleUpload(this,'content')">
                         <button onclick="execCmd('insertHorizontalRule')" title="Linha horizontal">&#8213;</button>
                         <div class="sep"></div>
                         <button onclick="execCmd('formatBlock','blockquote')" title="Citacao">&#10077;</button>
@@ -215,14 +217,13 @@ function login(){
 }
 
 function logout(){localStorage.removeItem("gh_token");TOKEN="";location.reload()}
-
 function hdr(){return{Authorization:"Bearer "+TOKEN,Accept:"application/vnd.github.v3+json","Content-Type":"application/json"}}
 
 function loadPosts(){
     fetch(apiUrl("js/posts.json")+"?ref="+BRANCH,{headers:hdr()})
     .then(function(r){if(!r.ok)throw new Error("Erro ao carregar");return r.json()})
     .then(function(d){posts=JSON.parse(decodeURIComponent(escape(atob(d.content))));renderPosts()})
-    .catch(function(e){document.getElementById("postList").innerHTML="<p style='color:#da3633'>Erro ao carregar postagens: "+e.message+"</p>"});
+    .catch(function(e){document.getElementById("postList").innerHTML="<p style='color:#da3633'>Erro: "+e.message+"</p>"});
 }
 
 function renderPosts(){
@@ -235,16 +236,20 @@ function renderPosts(){
 
 function showEditor(){switchTab("editor");clearEditor()}
 
-function getFile(path){
-    return fetch(apiUrl(path)+"?ref="+BRANCH,{headers:hdr()})
-    .then(function(r){if(!r.ok)return null;return r.json()})
-}
+function getFile(path){return fetch(apiUrl(path)+"?ref="+BRANCH,{headers:hdr()}).then(function(r){if(!r.ok)return null;return r.json()})}
 
 function putFile(path,content,sha,message){
     var body={message:message,content:btoa(unescape(encodeURIComponent(content))),branch:BRANCH};
     if(sha)body.sha=sha;
     return fetch(apiUrl(path),{method:"PUT",headers:hdr(),body:JSON.stringify(body)})
-    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||"Erro API")}).catch(function(){return r.text().then(function(t){throw new Error("Erro ao salvar")})});return r.json()})
+    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||"Erro API")}).catch(function(){throw new Error("Erro ao salvar")});return r.json()})
+}
+
+function putFileRaw(path,base64,sha,message){
+    var body={message:message,content:base64,branch:BRANCH};
+    if(sha)body.sha=sha;
+    return fetch(apiUrl(path),{method:"PUT",headers:hdr(),body:JSON.stringify(body)})
+    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||"Erro API")}).catch(function(){throw new Error("Erro ao salvar")});return r.json()})
 }
 
 function deleteFile(path,sha,message){
@@ -262,21 +267,18 @@ function editPost(i){
     document.getElementById("postTags").value=(p.tags||[]).join(", ");
     document.getElementById("editorTitle").textContent="Editar: "+p.title;
     document.getElementById("rte").innerHTML="<p>Carregando...</p>";
-    updateTagPreview();
-    updateThumbPreview();
-
+    updateTagPreview();updateThumbPreview();
     var postPath=p.date.replace(/-/g,"/")+"/"+p.slug+"/index.html";
     getFile(postPath).then(function(d){
-        if(!d){document.getElementById("rte").innerHTML="<p>Conteudo nao encontrado</p>";return}
+        if(!d){document.getElementById("rte").innerHTML="<p>Nao encontrado</p>";return}
         var full=decodeURIComponent(escape(atob(d.content)));
         var m=full.match(/<div class="entry-content">\s*([\s\S]*?)\s*<\/div>/);
-        document.getElementById("rte").innerHTML=m?m[1]:"<p>Conteudo nao encontrado</p>";
-    }).catch(function(e){showStatus("Erro ao carregar: "+e.message,"error")});
+        document.getElementById("rte").innerHTML=m?m[1]:"";
+    }).catch(function(e){showStatus("Erro: "+e.message,"error")});
 }
 
 function clearEditor(){
     document.getElementById("editSlug").value="";
-    document.getElementById("editThumbSha").value="";
     document.getElementById("postTitle").value="";
     document.getElementById("postDate").value=new Date().toISOString().slice(0,10);
     document.getElementById("postThumb").value="";
@@ -295,44 +297,75 @@ function updateTagPreview(){
 
 function updateThumbPreview(){
     var url=document.getElementById("postThumb").value.trim();
-    var div=document.getElementById("thumbPreview");
-    div.innerHTML=url?'<img src="'+url+'" onerror="this.style.display=\'none\'">':"";
+    document.getElementById("thumbPreview").innerHTML=url?'<img src="'+url+'" onerror="this.style.display=\'none\'">':"";
 }
 
 document.getElementById("postTags").addEventListener("input",updateTagPreview);
 document.getElementById("postThumb").addEventListener("input",updateThumbPreview);
 
-function uploadThumb(input){
+function resizeImage(file,maxW,maxH,quality){
+    return new Promise(function(resolve){
+        var img=new Image();
+        var reader=new FileReader();
+        reader.onload=function(e){
+            img.onload=function(){
+                var w=img.width,h=img.height;
+                if(w>maxW||h>maxH){
+                    var ratio=Math.min(maxW/w,maxH/h);
+                    w=Math.round(w*ratio);h=Math.round(h*ratio);
+                }
+                var canvas=document.createElement("canvas");
+                canvas.width=w;canvas.height=h;
+                var ctx=canvas.getContext("2d");
+                ctx.drawImage(img,0,0,w,h);
+                var q=quality||0.85;
+                var dataUrl=canvas.toBlob(function(blob){
+                    var r2=new FileReader();
+                    r2.onload=function(){resolve({base64:r2.result.split(",")[1],size:blob.size})};
+                    r2.readAsDataURL(blob);
+                },"image/jpeg",q);
+            };
+            img.src=e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function handleUpload(input,target){
     var file=input.files[0];
     if(!file)return;
-    if(file.size>5*1024*1024){showStatus("Imagem muito grande (max 5MB)","error");return}
-    showStatus("Enviando imagem...","loading");
-    var reader=new FileReader();
-    reader.onload=function(){
-        var base64=reader.result.split(",")[1];
+    input.value="";
+    showStatus("Processando imagem...","loading");
+    resizeImage(file,1200,900,0.85).then(function(result){
+        showStatus("Enviando...","loading");
         var date=document.getElementById("postDate").value||new Date().toISOString().slice(0,10);
-        var ext=file.name.split(".").pop().toLowerCase();
-        var name=Date.now()+"."+ext;
+        var name=Date.now()+".jpg";
         var path="content/uploads/"+date.replace(/-/g,"/")+"/"+name;
-        var body={message:"Upload: "+name,content:base64,branch:BRANCH};
-        fetch(apiUrl(path),{method:"PUT",headers:hdr(),body:JSON.stringify(body)})
-        .then(function(r){if(!r.ok)throw new Error("Falha no upload (HTTP "+r.status+")");return r.json()})
+        putFileRaw(path,result.base64,null,"Upload: "+name)
         .then(function(){
             var url="https://raw.githubusercontent.com/"+REPO+"/"+BRANCH+"/"+path;
-            document.getElementById("postThumb").value=url;
-            updateThumbPreview();
-            showStatus("Imagem enviada!","success");
+            if(target==="thumb"){
+                document.getElementById("postThumb").value=url;
+                updateThumbPreview();
+                showStatus("Thumbnail enviada!","success");
+            }else{
+                saveSelection();
+                restoreSelection();
+                document.execCommand("insertHTML",false,'<img src="'+url+'" alt="" style="max-width:100%;border-radius:8px">');
+                document.getElementById("rte").focus();
+                showStatus("Imagem inserida!","success");
+            }
         })
         .catch(function(e){showStatus("Erro: "+e.message,"error")});
-    };
-    reader.readAsDataURL(file);
+    });
 }
 
 function slugify(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
 
-function makePostHTML(title,date,content,tags){
+function makePostHTML(title,date,content,tags,thumb){
     var tagHTML=tags.length?'<div class="post-tags">'+tags.map(function(t){return'<span class="post-tag">'+t+'</span>'}).join("")+'</div>':'<div class="post-tags"></div>';
-    return'<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<link rel="icon" type="image/png" href="../../../../content/themes/google/favicon.png" sizes="32x32">\n<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">\n<link rel="stylesheet" href="../../../../css/style.css">\n<title>'+title+' - Ieso Nagata</title>\n</head>\n<body>\n<div id="page" class="site">\n<header class="site-header"><div class="header-inner"><a href="/" class="header-logo"><div class="header-logo-icon">IN</div><span class="site-title">Ieso Nagata</span></a><div class="search-box"><form role="search" method="get" action="/"><span class="search-icon">&#128269;</span><input type="search" name="s" placeholder="Pesquisar por ..."></form></div><nav class="main-navigation"><ul><li><a href="/">Início</a></li><li><a href="/about/">Sobre</a></li></ul></nav></div></header>\n<main class="site-main">\n<div class="sidebar sidebar-left" id="sidebar-left"></div>\n<div class="main-content single-post"><article class="post-card"><div class="post-card-content"><div class="post-card-meta"><span class="post-card-source"><span class="post-card-source-icon">IN</span>ieso nagata</span><span class="dot"></span><span class="post-date">'+date.split("-").reverse().join("/")+'</span></div><h1 class="post-card-title">'+title+'</h1><div class="entry-content">\n'+content+'\n</div>'+tagHTML+'</div></article><nav class="post-navigation"><div class="nav-links"><a href="/" rel="prev">&laquo; Voltar</a></div></nav></div>\n<div class="sidebar sidebar-right" id="sidebar-right"></div>\n</main>\n<footer class="site-footer"><div class="footer-inner"><p>&copy; 2026 Ieso Nagata. Todos os direitos reservados.</p></div></footer>\n</div>\n<script src="../../../../js/sidebar.js"><\/script>\n</body>\n</html>';
+    var heroImg=thumb?'\n<img width="1024" height="auto" src="'+thumb+'" class="post-card-image wp-post-image" alt="'+title+'" decoding="async">\n':'\n';
+    return'<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<link rel="icon" type="image/png" href="../../../../content/themes/google/favicon.png" sizes="32x32">\n<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">\n<link rel="stylesheet" href="../../../../css/style.css">\n<title>'+title+' - Ieso Nagata</title>\n</head>\n<body>\n<div id="page" class="site">\n<header class="site-header"><div class="header-inner"><a href="/" class="header-logo"><div class="header-logo-icon">IN</div><span class="site-title">Ieso Nagata</span></a><div class="search-box"><form role="search" method="get" action="/"><span class="search-icon">&#128269;</span><input type="search" name="s" placeholder="Pesquisar por ..."></form></div><nav class="main-navigation"><ul><li><a href="/">Início</a></li><li><a href="/about/">Sobre</a></li></ul></nav></div></header>\n<main class="site-main">\n<div class="sidebar sidebar-left" id="sidebar-left"></div>\n<div class="main-content single-post"><article class="post-card">'+heroImg+'<div class="post-card-content"><div class="post-card-meta"><span class="post-card-source"><span class="post-card-source-icon">IN</span>ieso nagata</span><span class="dot"></span><span class="post-date">'+date.split("-").reverse().join("/")+'</span></div><h1 class="post-card-title">'+title+'</h1><div class="entry-content">\n'+content+'\n</div>'+tagHTML+'</div></article><nav class="post-navigation"><div class="nav-links"><a href="/" rel="prev">&laquo; Voltar</a></div></nav></div>\n<div class="sidebar sidebar-right" id="sidebar-right"></div>\n</main>\n<footer class="site-footer"><div class="footer-inner"><p>&copy; 2026 Ieso Nagata. Todos os direitos reservados.</p></div></footer>\n</div>\n<script src="../../../../js/sidebar.js"><\/script>\n</body>\n</html>';
 }
 
 function savePost(){
@@ -344,13 +377,10 @@ function savePost(){
     var slug=document.getElementById("editSlug").value||slugify(title);
     if(!title){showStatus("Titulo obrigatorio","error");return}
     if(!date){showStatus("Data obrigatoria","error");return}
-    if(!slug){showStatus("Titulo invalido para slug","error");return}
-
+    if(!slug){showStatus("Titulo invalido","error");return}
     showStatus("Publicando...","loading");
-
     var postPath=date.replace(/-/g,"/")+"/"+slug+"/index.html";
-    var html=makePostHTML(title,date,content,tags);
-
+    var html=makePostHTML(title,date,content,tags,thumb);
     getFile(postPath).then(function(existing){
         return putFile(postPath,html,existing?existing.sha:null,(existing?"Edit":"New")+": "+title);
     }).then(function(){
@@ -363,9 +393,7 @@ function savePost(){
         return putFile("js/posts.json",JSON.stringify(posts),d.sha,"Update posts.json");
     }).then(function(){
         showStatus("Publicado com sucesso!","success");
-        loadPosts();
-        clearEditor();
-        switchTab("posts");
+        loadPosts();clearEditor();switchTab("posts");
     }).catch(function(e){showStatus("Erro: "+e.message,"error")});
 }
 
@@ -374,7 +402,6 @@ function deletePost(i){
     if(!confirm("Excluir: "+p.title+"?"))return;
     showStatus("Excluindo...","loading");
     var postPath=p.date.replace(/-/g,"/")+"/"+p.slug+"/index.html";
-
     getFile(postPath).then(function(d){
         if(d)return deleteFile(postPath,d.sha,"Delete: "+p.title);
     }).then(function(){
@@ -382,9 +409,8 @@ function deletePost(i){
         return getFile("js/posts.json");
     }).then(function(d){
         return putFile("js/posts.json",JSON.stringify(posts),d.sha,"Update posts.json");
-    }).then(function(){
-        showStatus("Excluido!","success");loadPosts();
-    }).catch(function(e){showStatus("Erro: "+e.message,"error")});
+    }).then(function(){showStatus("Excluido!","success");loadPosts()})
+    .catch(function(e){showStatus("Erro: "+e.message,"error")});
 }
 
 function execCmd(cmd,val){document.execCommand(cmd,false,val||null);document.getElementById("rte").focus()}
@@ -394,7 +420,6 @@ function restoreSelection(){if(savedSelection){var s=window.getSelection();s.rem
 function showLinkModal(){saveSelection();document.getElementById("linkUrl").value="";document.getElementById("linkText").value="";document.getElementById("linkModal").classList.add("show");document.getElementById("linkUrl").focus()}
 function closeLinkModal(){document.getElementById("linkModal").classList.remove("show")}
 function insertLink(){var u=document.getElementById("linkUrl").value.trim(),t=document.getElementById("linkText").value.trim();if(!u)return;closeLinkModal();restoreSelection();if(t){document.execCommand("insertHTML",false,'<a href="'+u+'">'+t+"</a>")}else{document.execCommand("createLink",false,u)}document.getElementById("rte").focus()}
-function insertImage(){var u=prompt("URL da imagem:");if(!u)return;document.execCommand("insertHTML",false,'<img src="'+u+'" alt="" style="max-width:100%;border-radius:8px">');document.getElementById("rte").focus()}
 function insertCode(){var c=prompt("Codigo:");if(!c)return;document.execCommand("insertHTML",false,"<pre><code>"+c.replace(/</g,"&lt;").replace(/>/g,"&gt;")+"</code></pre>");document.getElementById("rte").focus()}
 
 document.getElementById("rte").addEventListener("paste",function(e){
