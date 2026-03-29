@@ -31,7 +31,7 @@ setInterval(updateTime,1000);
 function updateWeather(code,temp,name){
   var c=document.getElementById("weather-content");
   if(!c)return;
-  c.innerHTML='<div class="weather-icon">'+(wicons[code]||"&#9728;&#65039;")+'</div><div class="weather-temp">'+Math.round(temp)+"&deg;C</div><div class="weather-condition">'+(wcodes[code]||"Indispon\u00edvel")+"</div><div class="weather-location\">"+name+"</div>";
+  c.innerHTML='<div class="weather-icon">'+(wicons[code]||"&#9728;&#65039;")+'</div><div class="weather-temp">'+Math.round(temp)+"&deg;C</div><div class="weather-condition">'+(wcodes[code]||"Indispon\u00edvel")+"</div><div class="weather-location">"+name+"</div>";
 }
 
 function fetchWeather(lat,lon){
