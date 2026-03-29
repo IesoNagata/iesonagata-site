@@ -2,9 +2,9 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="wp-content/themes/google/favicon.png" sizes="32x32">
     <title>Ieso Nagata</title>
-    <link rel="icon" href="wp-content/themes/google/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,253 +12,205 @@
 </head>
 <body>
 
-<header class="site-header">
-    <div class="header-inner">
-        <div class="logo">
-            <a href="/">
-                <span class="logo-icon">IN</span>
-                <span class="logo-text">Ieso Nagata</span>
+<div id="page" class="site">
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="/" class="header-logo">
+                <div class="header-logo-icon">IN</div>
+                <span class="site-title">Ieso Nagata</span>
             </a>
-        </div>
-        <div class="header-right">
             <div class="search-box">
-                <form action="#" method="get">
-                    <input type="text" placeholder="Pesquisar..." name="s">
-                    <button type="submit">&#128269;</button>
+                <form role="search" method="get" action="/">
+                    <span class="search-icon">&#128269;</span>
+                    <input type="search" name="s" placeholder="Pesquisar por ..." value="">
                 </form>
             </div>
-            <nav class="main-nav">
+            <nav class="main-navigation">
                 <ul>
                     <li><a href="/">Início</a></li>
                     <li><a href="/sobre/">Sobre</a></li>
                 </ul>
             </nav>
         </div>
-    </div>
-</header>
+    </header>
 
-<div class="site-container">
-    <div class="columns-layout">
+    <main class="site-main">
 
-        <aside class="sidebar-left">
-            <div class="widget">
-                <h3 class="widget-title">Categorias</h3>
-                <ul>
-                    <li><a href="#">Desenvolvimento</a></li>
-                    <li><a href="#">Games</a></li>
-                    <li><a href="#">Infraestrutura</a></li>
-                    <li><a href="#">Linux</a></li>
-                    <li><a href="#">Projetos</a></li>
+        <div class="sidebar sidebar-left">
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Categorias</h3>
+                <ul class="sidebar-menu">
+                    <li><a href="#">Sem categoria</a></li>
                 </ul>
             </div>
-
-            <div class="widget">
-                <h3 class="widget-title">Tech News</h3>
-                <ul class="tech-news-list">
-                    <li>
-                        <a href="#">OpenAI lança GPT-5 com capacidades multimodais avançadas</a>
-                        <span class="news-date">28/03/2026</span>
-                    </li>
-                    <li>
-                        <a href="#">Linux Kernel 6.8 traz melhorias significativas para jogos</a>
-                        <span class="news-date">26/03/2026</span>
-                    </li>
-                    <li>
-                        <a href="#">Proxmox VE 9.0 anunciado com suporte a clustering nativo</a>
-                        <span class="news-date">24/03/2026</span>
-                    </li>
-                    <li>
-                        <a href="#">GitHub Copilot agora gera testes unitários automaticamente</a>
-                        <span class="news-date">22/03/2026</span>
-                    </li>
-                    <li>
-                        <a href="#">Valve atualiza Steam Deck com novo sistema operacional</a>
-                        <span class="news-date">20/03/2026</span>
-                    </li>
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Tech News</h3>
+                <ul class="sidebar-menu">
+                    <li><a href="#">OpenAI lança GPT-5 com capacidades multimodais avançadas</a></li>
+                    <li><a href="#">Linux Kernel 6.8 traz melhorias significativas para jogos</a></li>
+                    <li><a href="#">Proxmox VE 9.0 anunciado com suporte a clustering nativo</a></li>
+                    <li><a href="#">GitHub Copilot agora gera testes unitários automaticamente</a></li>
+                    <li><a href="#">Valve atualiza Steam Deck com novo sistema operacional</a></li>
                 </ul>
             </div>
-        </aside>
+        </div>
 
-        <main class="content-area">
-            <section class="hero-section">
-                <a href="/2026/03/15/do-cansaco-ao-codigo-como-um-domingo-de-folga-virou-um-projeto-de-software/" class="hero-card">
-                    <div class="hero-image">
-                        <img src="wp-content/uploads/2026/03/monitor-300x226.png" alt="Do Cansaço ao Código">
-                    </div>
-                    <div class="hero-content">
-                        <span class="hero-badge">Destaque</span>
-                        <h2>Do Cansaço ao Código: Como um Domingo de Folga Virou um Projeto de Software</h2>
-                        <p>Às vezes, as melhores ideias nascem nos momentos mais inesperados. Foi exatamente o que aconteceu comigo num domingo de folga...</p>
-                        <span class="hero-date">15 de março de 2026</span>
-                    </div>
+        <div class="main-content">
+
+            <div class="hero">
+                <a href="/2026/03/15/do-cansaco-ao-codigo-como-um-domingo-de-folga-virou-um-projeto-de-software/">
+                    <img src="wp-content/uploads/2026/03/monitor.png" alt="Do Cansaço ao Código">
                 </a>
-            </section>
-
-            <section class="posts-grid">
-                <article class="post-card">
-                    <div class="post-thumbnail">
-                        <a href="/2026/03/15/do-cansaco-ao-codigo-como-um-domingo-de-folga-virou-um-projeto-de-software/">
-                            <img src="wp-content/uploads/2026/03/monitor-300x226.png" alt="Do Cansaço ao Código">
-                        </a>
+                <span class="hero-label">Destaque</span>
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <a href="/2026/03/15/do-cansaco-ao-codigo-como-um-domingo-de-folga-virou-um-projeto-de-software/">Do Cansaço ao Código: Como um Domingo de Folga Virou um Projeto de Software</a>
+                    </h1>
+                    <div class="hero-meta">
+                        <span class="post-source">
+                            <span class="post-source-icon">IN</span>
+                            ieso nagata
+                        </span>
+                        <span class="dot"></span>
+                        <span class="post-date">15/03/2026</span>
                     </div>
-                    <div class="post-info">
-                        <div class="post-source">
-                            <span class="source-icon">IN</span>
-                            <span class="source-name">ieso nagata</span>
+                    <p class="hero-excerpt">Às vezes, as melhores ideias nascem nos momentos mais inesperados. Foi exatamente o que aconteceu comigo num domingo de folga...</p>
+                </div>
+            </div>
+
+            <h2 class="section-title">Últimas Notícias</h2>
+
+            <div class="posts-grid">
+                <article class="post-card">
+                    <img src="wp-content/uploads/2026/03/monitor-300x226.png" class="post-card-image" alt="Do Cansaço ao Código">
+                    <div class="post-card-content">
+                        <div class="post-card-source">
+                            <span class="post-card-source-icon">IN</span>
+                            ieso nagata
                         </div>
-                        <h3 class="post-title">
+                        <h3 class="post-card-title">
                             <a href="/2026/03/15/do-cansaco-ao-codigo-como-um-domingo-de-folga-virou-um-projeto-de-software/">Do Cansaço ao Código: Como um Domingo de Folga Virou um Projeto de Software</a>
                         </h3>
-                        <p class="post-excerpt">Às vezes, as melhores ideias nascem nos momentos mais inesperados. Foi exatamente o que aconteceu comigo num domingo de folga...</p>
-                        <span class="post-date">15 de março de 2026</span>
+                        <p class="post-card-excerpt">Às vezes, as melhores ideias nascem nos momentos mais inesperados. Foi exatamente o que aconteceu comigo num domingo de folga...</p>
+                        <div class="post-card-meta">
+                            <span class="post-date">15/03/2026</span>
+                        </div>
                     </div>
                 </article>
 
                 <article class="post-card">
-                    <div class="post-thumbnail">
-                        <a href="/2026/03/08/jogatina-armareforger/">
-                            <img src="wp-content/uploads/2026/03/arma-300x126.png" alt="Jogatina #ArmaReforger">
-                        </a>
-                    </div>
-                    <div class="post-info">
-                        <div class="post-source">
-                            <span class="source-icon">IN</span>
-                            <span class="source-name">ieso nagata</span>
+                    <img src="wp-content/uploads/2026/03/arma-300x126.png" class="post-card-image" alt="Jogatina #ArmaReforger">
+                    <div class="post-card-content">
+                        <div class="post-card-source">
+                            <span class="post-card-source-icon">IN</span>
+                            ieso nagata
                         </div>
-                        <h3 class="post-title">
+                        <h3 class="post-card-title">
                             <a href="/2026/03/08/jogatina-armareforger/">Jogatina #ArmaReforger</a>
                         </h3>
-                        <p class="post-excerpt">Mais uma sessão de Arma Reforger com a galera. Dessa vez, missões táticas e muita diversão em grupo.</p>
-                        <span class="post-date">8 de março de 2026</span>
+                        <p class="post-card-excerpt">Mais uma sessão de Arma Reforger com a galera. Dessa vez, missões táticas e muita diversão em grupo.</p>
+                        <div class="post-card-meta">
+                            <span class="post-date">08/03/2026</span>
+                        </div>
                     </div>
                 </article>
 
                 <article class="post-card">
-                    <div class="post-thumbnail">
-                        <a href="/2026/02/27/conheca-o-cubecoders-amp-o-painel-de-controle-definitivo-para-seus-servidores-de-jogos/">
-                            <img src="wp-content/uploads/2026/02/amp1-300x154.png" alt="CubeCoders AMP">
-                        </a>
-                    </div>
-                    <div class="post-info">
-                        <div class="post-source">
-                            <span class="source-icon">IN</span>
-                            <span class="source-name">ieso nagata</span>
+                    <img src="wp-content/uploads/2026/02/amp1-300x154.png" class="post-card-image" alt="CubeCoders AMP">
+                    <div class="post-card-content">
+                        <div class="post-card-source">
+                            <span class="post-card-source-icon">IN</span>
+                            ieso nagata
                         </div>
-                        <h3 class="post-title">
+                        <h3 class="post-card-title">
                             <a href="/2026/02/27/conheca-o-cubecoders-amp-o-painel-de-controle-definitivo-para-seus-servidores-de-jogos/">CubeCoders AMP: O Painel de Controle Definitivo para Seus Servidores de Jogos</a>
                         </h3>
-                        <p class="post-excerpt">Conheça o CubeCoders AMP, um painel de controle poderoso e fácil de usar para gerenciar seus servidores de jogos.</p>
-                        <span class="post-date">27 de fevereiro de 2026</span>
+                        <p class="post-card-excerpt">Conheça o CubeCoders AMP, um painel de controle poderoso e fácil de usar para gerenciar seus servidores de jogos.</p>
+                        <div class="post-card-meta">
+                            <span class="post-date">27/02/2026</span>
+                        </div>
                     </div>
                 </article>
 
                 <article class="post-card">
-                    <div class="post-thumbnail">
-                        <a href="/2026/02/20/ksk-rostov-mais-uma-guerra-iniciada/">
-                            <img src="wp-content/uploads/2026/02/arma-300x126.jpg" alt="KSK Rostov">
-                        </a>
-                    </div>
-                    <div class="post-info">
-                        <div class="post-source">
-                            <span class="source-icon">IN</span>
-                            <span class="source-name">ieso nagata</span>
+                    <img src="wp-content/uploads/2026/02/arma-300x126.jpg" class="post-card-image" alt="KSK Rostov">
+                    <div class="post-card-content">
+                        <div class="post-card-source">
+                            <span class="post-card-source-icon">IN</span>
+                            ieso nagata
                         </div>
-                        <h3 class="post-title">
+                        <h3 class="post-card-title">
                             <a href="/2026/02/20/ksk-rostov-mais-uma-guerra-iniciada/">KSK Rostov: Mais Uma Guerra Iniciada</a>
                         </h3>
-                        <p class="post-excerpt">Uma nova campanha no Arma Reforger com o grupo KSK Rostov. Estratégia, trabalho em equipe e muita ação.</p>
-                        <span class="post-date">20 de fevereiro de 2026</span>
+                        <p class="post-card-excerpt">Uma nova campanha no Arma Reforger com o grupo KSK Rostov. Estratégia, trabalho em equipe e muita ação.</p>
+                        <div class="post-card-meta">
+                            <span class="post-date">20/02/2026</span>
+                        </div>
                     </div>
                 </article>
 
                 <article class="post-card">
-                    <div class="post-thumbnail">
-                        <a href="/2026/02/20/proxmox-arma-reforger-e-wordpress/">
-                            <img src="wp-content/uploads/2026/02/proxmox-1-300x137.png" alt="Proxmox, Arma Reforger e WordPress">
-                        </a>
-                    </div>
-                    <div class="post-info">
-                        <div class="post-source">
-                            <span class="source-icon">IN</span>
-                            <span class="source-name">ieso nagata</span>
+                    <img src="wp-content/uploads/2026/02/proxmox-1-300x137.png" class="post-card-image" alt="Proxmox">
+                    <div class="post-card-content">
+                        <div class="post-card-source">
+                            <span class="post-card-source-icon">IN</span>
+                            ieso nagata
                         </div>
-                        <h3 class="post-title">
+                        <h3 class="post-card-title">
                             <a href="/2026/02/20/proxmox-arma-reforger-e-wordpress/">Proxmox, Arma Reforger e WordPress</a>
                         </h3>
-                        <p class="post-excerpt">Como configurei meu servidor Proxmox para rodar servidores de jogos e WordPress na mesma máquina.</p>
-                        <span class="post-date">20 de fevereiro de 2026</span>
+                        <p class="post-card-excerpt">Como configurei meu servidor Proxmox para rodar servidores de jogos e WordPress na mesma máquina.</p>
+                        <div class="post-card-meta">
+                            <span class="post-date">20/02/2026</span>
+                        </div>
                     </div>
                 </article>
-            </section>
-        </main>
+            </div>
+        </div>
 
-        <aside class="sidebar-right">
-            <div class="widget">
-                <h3 class="widget-title">Em Alta</h3>
-                <ul class="trending-list">
-                    <li>
-                        <span class="trending-number">1</span>
-                        <a href="/2026/03/15/do-cansaco-ao-codigo-como-um-domingo-de-folga-virou-um-projeto-de-software/">Do Cansaço ao Código</a>
-                    </li>
-                    <li>
-                        <span class="trending-number">2</span>
-                        <a href="/2026/02/27/conheca-o-cubecoders-amp-o-painel-de-controle-definitivo-para-seus-servidores-de-jogos/">CubeCoders AMP</a>
-                    </li>
-                    <li>
-                        <span class="trending-number">3</span>
-                        <a href="/2026/02/20/proxmox-arma-reforger-e-wordpress/">Proxmox, Arma Reforger e WordPress</a>
-                    </li>
-                    <li>
-                        <span class="trending-number">4</span>
-                        <a href="/2026/03/08/jogatina-armareforger/">Jogatina #ArmaReforger</a>
-                    </li>
-                    <li>
-                        <span class="trending-number">5</span>
-                        <a href="/2026/02/20/ksk-rostov-mais-uma-guerra-iniciada/">KSK Rostov</a>
-                    </li>
+        <div class="sidebar sidebar-right">
+            <div class="trending-section">
+                <h3 class="sidebar-title">Em Alta</h3>
+                <ol class="trending-list">
+                    <li><a href="/2026/03/15/do-cansaco-ao-codigo-como-um-domingo-de-folga-virou-um-projeto-de-software/">Do Cansaço ao Código</a></li>
+                    <li><a href="/2026/02/27/conheca-o-cubecoders-amp-o-painel-de-controle-definitivo-para-seus-servidores-de-jogos/">CubeCoders AMP</a></li>
+                    <li><a href="/2026/02/20/proxmox-arma-reforger-e-wordpress/">Proxmox, Arma Reforger e WordPress</a></li>
+                    <li><a href="/2026/03/08/jogatina-armareforger/">Jogatina #ArmaReforger</a></li>
+                    <li><a href="/2026/02/20/ksk-rostov-mais-uma-guerra-iniciada/">KSK Rostov</a></li>
+                </ol>
+            </div>
+
+            <div class="trending-section">
+                <h3 class="sidebar-title">Tags</h3>
+                <div class="tags-cloud">
+                    <a href="#" class="tag-link">arma reforger</a>
+                    <a href="#" class="tag-link">game server</a>
+                    <a href="#" class="tag-link">linux</a>
+                    <a href="#" class="tag-link">games</a>
+                    <a href="#" class="tag-link">proxmox</a>
+                    <a href="#" class="tag-link">cube coders</a>
+                    <a href="#" class="tag-link">AMP</a>
+                </div>
+            </div>
+
+            <div class="trending-section">
+                <h3 class="sidebar-title">Siga-nos</h3>
+                <ul class="sidebar-menu social-menu">
+                    <li><a href="https://www.facebook.com/IesoNagata" target="_blank" rel="noopener">Facebook</a></li>
+                    <li><a href="https://www.youtube.com/@iesonagata" target="_blank" rel="noopener">YouTube</a></li>
+                    <li><a href="https://www.instagram.com/iesonagata/" target="_blank" rel="noopener">Instagram</a></li>
                 </ul>
             </div>
+        </div>
 
-            <div class="widget">
-                <h3 class="widget-title">Tags</h3>
-                <div class="tags-cloud">
-                    <a href="#" class="tag">arma reforger</a>
-                    <a href="#" class="tag">game server</a>
-                    <a href="#" class="tag">linux</a>
-                    <a href="#" class="tag">games</a>
-                    <a href="#" class="tag">proxmox</a>
-                    <a href="#" class="tag">cube coders</a>
-                    <a href="#" class="tag">AMP</a>
-                </div>
-            </div>
+    </main>
 
-            <div class="widget">
-                <h3 class="widget-title">Redes Sociais</h3>
-                <div class="social-links">
-                    <a href="https://www.facebook.com/IesoNagata" target="_blank" rel="noopener noreferrer" class="social-link facebook">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-                        Facebook
-                    </a>
-                    <a href="https://www.youtube.com/@iesonagata" target="_blank" rel="noopener noreferrer" class="social-link youtube">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="#fff"/></svg>
-                        YouTube
-                    </a>
-                    <a href="https://www.instagram.com/iesonagata" target="_blank" rel="noopener noreferrer" class="social-link instagram">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>
-                        Instagram
-                    </a>
-                </div>
-            </div>
-        </aside>
-
-    </div>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p>&copy; 2026 Ieso Nagata. Todos os direitos reservados.</p>
+        </div>
+    </footer>
 </div>
-
-<footer class="site-footer">
-    <div class="footer-inner">
-        <p>&copy; 2026 Ieso Nagata. Todos os direitos reservados.</p>
-    </div>
-</footer>
 
 </body>
 </html>
