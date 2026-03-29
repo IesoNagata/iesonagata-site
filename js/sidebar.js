@@ -50,6 +50,7 @@ for(var i=0;i<count;i++){
 var t=data.items[i].title;
 var l=data.items[i].link;
 html+='<li><a href="'+l+'" target="_blank" rel="noopener">'+t+'</a></li>';
+if(i<count-1)html+='<hr>';
 }
 list.innerHTML=html;
 }else{
