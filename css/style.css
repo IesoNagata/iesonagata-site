@@ -340,6 +340,19 @@ img {
     font-size: 0.7rem;
     color: var(--text-muted);
     margin-top: 0.15rem;
+    margin-bottom: 0.5rem;
+}
+
+.weather-date {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.2rem;
+}
+
+.weather-hour {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
 }
 
 /* Tech News Widget */
