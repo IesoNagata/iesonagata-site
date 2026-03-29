@@ -103,7 +103,7 @@ fetch(base+"js/posts.json")
 .then(function(posts){window.populateSidebarPosts(posts)})
 .catch(function(){});
 var rssUrl=encodeURIComponent("https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtVnVHZ0pWVXlnQVAB?hl=pt-BR&gl=BR&ceid=BR:pt-419");
-fetch("https://api.rss2json.com/v1/api.json?rss_url="+rssUrl+"&count=10")
+fetch("https://api.rss2json.com/v1/api.json?rss_url="+rssUrl+"&count=10&_="+Date.now())
 .then(function(r){return r.json()})
 .then(function(data){
 var list=document.getElementById("tech-news-list");
