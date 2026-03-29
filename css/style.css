@@ -848,6 +848,7 @@ img {
     max-width: 1300px;
     margin: 0 auto;
     padding: 0 1.5rem;
+    padding-bottom: 2rem;
     text-align: center;
     display: flex;
     flex-direction: column;
