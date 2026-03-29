@@ -102,8 +102,9 @@ fetch(base+"js/posts.json")
 .then(function(resp){return resp.json()})
 .then(function(posts){window.populateSidebarPosts(posts)})
 .catch(function(){});
-var rssUrl=encodeURIComponent("https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtVnVHZ0pWVXlnQVAB?hl=pt-BR&gl=BR&ceid=BR:pt-419");
-fetch("https://api.rss2json.com/v1/api.json?rss_url="+rssUrl+"&count=10&_="+Date.now())
+var rssUrl=encodeURIComponent("https://news.google.com/rss/search?q=tecnologia+e+computadores&hl=pt-BR&gl=BR&ceid=BR:pt-419");
+var newsUrl="https://news.google.com/search?q=tecnologia%20e%20computadores&hl=pt-BR&gl=BR&ceid=BR%3Apt-419";
+fetch("https://api.rss2json.com/v1/api.json?rss_url="+rssUrl+"&_="+Date.now())
 .then(function(r){return r.json()})
 .then(function(data){
 var list=document.getElementById("tech-news-list");
@@ -119,11 +120,11 @@ if(i<count-1)html+='<hr>';
 }
 list.innerHTML=html;
 }else{
-list.innerHTML='<li><a href="https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtVnVHZ0pWVXlnQVAB?hl=pt-BR&gl=BR&ceid=BR%3Apt-419" target="_blank" rel="noopener">Ver no Google News</a></li>';
+list.innerHTML='<li><a href="'+newsUrl+'" target="_blank" rel="noopener">Ver no Google News</a></li>';
 }
 })
 .catch(function(){
 var list=document.getElementById("tech-news-list");
-if(list)list.innerHTML='<li><a href="https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtVnVHZ0pWVXlnQVAB?hl=pt-BR&gl=BR&ceid=BR%3Apt-419" target="_blank" rel="noopener">Ver no Google News</a></li>';
+if(list)list.innerHTML='<li><a href="'+newsUrl+'" target="_blank" rel="noopener">Ver no Google News</a></li>';
 });
 })();
