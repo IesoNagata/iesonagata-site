@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin - Ieso Nagata</title>
+    <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Inter,system-ui,sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh}
+    .login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh}
+    .login-box{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:2rem;width:400px}
+    .login-box h2{margin-bottom:1rem;color:#f0f6fc}
+    .login-box input{width:100%;padding:.75rem;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e6edf3;font-size:.9rem;margin-bottom:1rem}
+    .login-box input:focus{outline:none;border-color:#58a6ff}
+    .btn{padding:.6rem 1.2rem;border:none;border-radius:6px;cursor:pointer;font-size:.85rem;font-weight:500}
+    .btn-primary{background:linear-gradient(135deg,#58a6ff,#1f6feb);color:#fff}
+    .btn-danger{background:#da3633;color:#fff}
+    .btn-secondary{background:#21262d;color:#e6edf3;border:1px solid #30363d}
+    .btn:hover{opacity:.9}
+    .admin{display:none}
+    .admin-header{background:#161b22;border-bottom:1px solid #30363d;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+    .admin-header h1{font-size:1.1rem;color:#f0f6fc}
+    .admin-container{max-width:900px;margin:2rem auto;padding:0 1rem}
+    .post-list{margin-bottom:2rem}
+    .post-item{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1rem;margin-bottom:.5rem;display:flex;justify-content:space-between;align-items:center}
+    .post-item .title{color:#f0f6fc;font-size:.9rem}
+    .post-item .date{color:#8b949e;font-size:.75rem}
+    .post-item .actions{display:flex;gap:.5rem}
+    .editor{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:1.5rem}
+    .editor h2{margin-bottom:1rem;color:#f0f6fc}
+    .form-group{margin-bottom:1rem}
+    .form-group label{display:block;color:#8b949e;font-size:.8rem;margin-bottom:.3rem;text-transform:uppercase}
+    .form-group input,.form-group textarea,.form-group select{width:100%;padding:.75rem;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e6edf3;font-size:.9rem;font-family:inherit}
+    .form-group textarea{min-height:300px;resize:vertical}
+    .form-group input:focus,.form-group textarea:focus{outline:none;border-color:#58a6ff}
+    .form-row{display:flex;gap:1rem}
+    .form-row .form-group{flex:1}
+    .tag-input{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}
+    .tag-input .tag{background:#1f6feb;color:#fff;padding:.2rem .6rem;border-radius:12px;font-size:.75rem;cursor:pointer}
+    .tag-input .tag:hover{background:#da3633}
+    .editor-actions{display:flex;gap:.5rem;margin-top:1rem}
+    .status{position:fixed;bottom:1rem;right:1rem;padding:.75rem 1.25rem;border-radius:8px;font-size:.85rem;display:none;z-index:100}
+    .status.success{display:block;background:#238636;color:#fff}
+    .status.error{display:block;background:#da3633;color:#fff}
+    .status.loading{display:block;background:#1f6feb;color:#fff}
+    .tabs{display:flex;gap:0;margin-bottom:1rem;border-bottom:1px solid #30363d}
+    .tab{padding:.75rem 1.25rem;cursor:pointer;color:#8b949e;border-bottom:2px solid transparent;font-size:.85rem}
+    .tab.active{color:#f0f6fc;border-bottom-color:#58a6ff}
+    .tab:hover{color:#e6edf3}
+    .panel{display:none}
+    .panel.active{display:block}
+    .help{color:#8b949e;font-size:.75rem;margin-top:.25rem}
+    </style>
+</head>
+<body>
+
+<div id="loginScreen" class="login-screen">
+    <div class="login-box">
+        <h2>&#128274; Admin Login</h2>
+        <p style="color:#8b949e;font-size:.85rem;margin-bottom:1rem">Insira seu GitHub Personal Access Token (PAT) com permissao <strong>repo</strong>.</p>
+        <input type="password" id="tokenInput" placeholder="ghp_xxxxxxxxxxxx">
+        <button class="btn btn-primary" onclick="login()" style="width:100%">Entrar</button>
+        <p class="help" style="margin-top:1rem">Gerar token em: GitHub Settings &gt; Developer Settings &gt; Personal Access Tokens</p>
+    </div>
+</div>
+
+<div id="adminScreen" class="admin">
+    <div class="admin-header">
+        <h1>&#128221; Ieso Nagata - Admin</h1>
+        <div>
+            <button class="btn btn-secondary" onclick="showEditor()">+ Nova Postagem</button>
+            <button class="btn btn-secondary" onclick="logout()" style="margin-left:.5rem">Sair</button>
+        </div>
+    </div>
+
+    <div class="admin-container">
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('posts')">Postagens</div>
+            <div class="tab" onclick="switchTab('editor')">Editor</div>
+        </div>
+
+        <div id="panel-posts" class="panel active">
+            <div id="postList" class="post-list">Carregando...</div>
+        </div>
+
+        <div id="panel-editor" class="panel">
+            <div class="editor">
+                <h2 id="editorTitle">Nova Postagem</h2>
+                <input type="hidden" id="editSlug" value="">
+                <div class="form-group">
+                    <label>Titulo</label>
+                    <input type="text" id="postTitle" placeholder="Titulo da postagem">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Data</label>
+                        <input type="date" id="postDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Thumbnail URL</label>
+                        <input type="text" id="postThumb" placeholder="wp-content/uploads/2026/03/img.png">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Tags (separadas por virgula)</label>
+                    <input type="text" id="postTags" placeholder="arma reforger, games, linux">
+                    <div id="tagPreview" class="tag-input"></div>
+                </div>
+                <div class="form-group">
+                    <label>Conteudo (HTML)</label>
+                    <textarea id="postContent" placeholder="<p>Conteudo da postagem...</p>"></textarea>
+                </div>
+                <div class="editor-actions">
+                    <button class="btn btn-primary" onclick="savePost()">&#128190; Publicar</button>
+                    <button class="btn btn-secondary" onclick="clearEditor()">Limpar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="statusBar" class="status"></div>
+
+<script>
+var TOKEN="",REPO="IesoNagata/iesonagata-site",BRANCH="master",posts=[];
+
+function login(){
+    TOKEN=document.getElementById("tokenInput").value.trim();
+    if(!TOKEN)return showStatus("Insira o token","error");
+    localStorage.setItem("gh_token",TOKEN);
+    showStatus("Autenticando...","loading");
+    fetch("https://api.github.com/repos/"+REPO,{headers:hdr()})
+    .then(function(r){if(!r.ok)throw new Error("Token invalido");return r.json()})
+    .then(function(){document.getElementById("loginScreen").style.display="none";document.getElementById("adminScreen").style.display="block";loadPosts();showStatus("Conectado","success")})
+    .catch(function(e){showStatus("Erro: "+e.message,"error")});
+}
+
+function logout(){localStorage.removeItem("gh_token");TOKEN="";document.getElementById("loginScreen").style.display="flex";document.getElementById("adminScreen").style.display="none"}
+
+function hdr(){return{Authorization:"Bearer "+TOKEN,Accept:"application/vnd.github.v3+json"}}
+
+function loadPosts(){
+    fetch("https://api.github.com/repos/"+REPO+"/contents/js/posts.json?ref="+BRANCH,{headers:hdr()})
+    .then(function(r){return r.json()})
+    .then(function(d){posts=JSON.parse(atob(d.content));renderPosts()})
+    .catch(function(){document.getElementById("postList").innerHTML="<p>Erro ao carregar postagens.</p>"});
+}
+
+function renderPosts(){
+    var html="";
+    posts.forEach(function(p,i){
+        html+='<div class="post-item"><div><div class="title">'+p.title+'</div><div class="date">'+p.date+'</div></div><div class="actions"><button class="btn btn-secondary" onclick="editPost('+i+')">Editar</button><button class="btn btn-danger" onclick="deletePost('+i+')">Excluir</button></div></div>';
+    });
+    document.getElementById("postList").innerHTML=html||"<p>Nenhuma postagem.</p>";
+}
+
+function showEditor(i){
+    switchTab("editor");
+    if(i===undefined){clearEditor();return}
+}
+
+function editPost(i){
+    var p=posts[i];
+    document.getElementById("editSlug").value=p.slug;
+    document.getElementById("postTitle").value=p.title;
+    document.getElementById("postDate").value=p.date;
+    document.getElementById("postThumb").value=p.thumb||"";
+    document.getElementById("postTags").value=(p.tags||[]).join(", ");
+    document.getElementById("editorTitle").textContent="Editar: "+p.title;
+    updateTagPreview();
+    switchTab("editor");
+    var url="/"+p.date.replace(/-/g,"/")+"/"+p.slug+"/index.html";
+    fetch("https://api.github.com/repos/"+REPO+"/contents"+url+"?ref="+BRANCH,{headers:hdr()})
+    .then(function(r){return r.json()})
+    .then(function(d){document.getElementById("postContent").value=decodeURIComponent(escape(atob(d.content)))})
+    .catch(function(){document.getElementById("postContent").value=""});
+}
+
+function clearEditor(){
+    document.getElementById("editSlug").value="";
+    document.getElementById("postTitle").value="";
+    document.getElementById("postDate").value=new Date().toISOString().slice(0,10);
+    document.getElementById("postThumb").value="";
+    document.getElementById("postTags").value="";
+    document.getElementById("postContent").value="";
+    document.getElementById("editorTitle").textContent="Nova Postagem";
+    document.getElementById("tagPreview").innerHTML="";
+}
+
+function updateTagPreview(){
+    var tags=document.getElementById("postTags").value.split(",").map(function(t){return t.trim()}).filter(Boolean);
+    var html="";
+    tags.forEach(function(t){html+='<span class="tag">'+t+'</span>'});
+    document.getElementById("tagPreview").innerHTML=html;
+}
+
+document.getElementById("postTags").addEventListener("input",updateTagPreview);
+
+function slugify(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
+
+function makePostHTML(title,date,content,tags){
+    var tagHTML=tags.length?'<div class="post-tags">'+tags.map(function(t){return'<span class="post-tag">'+t+'</span>'}).join("")+'</div>':'<div class="post-tags"></div>';
+    return'<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<link rel="icon" type="image/png" href="../../../../wp-content/themes/google/favicon.png" sizes="32x32">\n<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">\n<link rel="stylesheet" href="../../../../css/style.css">\n<title>'+title+' - Ieso Nagata</title>\n</head>\n<body>\n<div id="page" class="site">\n<header class="site-header"><div class="header-inner"><a href="/" class="header-logo"><div class="header-logo-icon">IN</div><span class="site-title">Ieso Nagata</span></a><div class="search-box"><form role="search" method="get" action="/"><span class="search-icon">&#128269;</span><input type="search" name="s" placeholder="Pesquisar por ..."></form></div><nav class="main-navigation"><ul><li><a href="/">Início</a></li><li><a href="/sobre/">Sobre</a></li></ul></nav></div></header>\n<main class="site-main">\n<div class="sidebar sidebar-left" id="sidebar-left"></div>\n<div class="main-content single-post"><article class="post-card"><div class="post-card-content"><div class="post-card-meta"><span class="post-card-source"><span class="post-card-source-icon">IN</span>ieso nagata</span><span class="dot"></span><span class="post-date">'+date.split("-").reverse().join("/")+'</span></div><h1 class="post-card-title">'+title+'</h1><div class="entry-content">\n'+content+'\n</div>'+tagHTML+'</div></article><nav class="post-navigation"><div class="nav-links"><a href="/" rel="prev">« Voltar</a></div></nav></div>\n<div class="sidebar sidebar-right" id="sidebar-right"></div>\n</main>\n<footer class="site-footer"><div class="footer-inner"><p>&copy; 2026 Ieso Nagata. Todos os direitos reservados.</p></div></footer>\n</div>\n<script src="../../../../js/sidebar.js"><\/script>\n</body>\n</html>';
+}
+
+function savePost(){
+    var title=document.getElementById("postTitle").value.trim();
+    var date=document.getElementById("postDate").value;
+    var thumb=document.getElementById("postThumb").value.trim();
+    var tags=document.getElementById("postTags").value.split(",").map(function(t){return t.trim()}).filter(Boolean);
+    var content=document.getElementById("postContent").value;
+    var slug=document.getElementById("editSlug").value||slugify(title);
+
+    if(!title||!date)return showStatus("Titulo e data obrigatorios","error");
+
+    showStatus("Publicando...","loading");
+
+    var path="/"+date.replace(/-/g,"/")+"/"+slug+"/index.html";
+    var html=makePostHTML(title,date,content,tags);
+    var b64=btoa(unescape(encodeURIComponent(html)));
+
+    // Get existing file SHA if editing
+    fetch("https://api.github.com/repos/"+REPO+"/contents"+path+"?ref="+BRANCH,{headers:hdr()})
+    .then(function(r){return r.ok?r.json():null})
+    .then(function(existing){
+        var body={message:(existing?"Edit":"New")+": "+title,content:b64,branch:BRANCH};
+        if(existing)body.sha=existing.sha;
+        return fetch("https://api.github.com/repos/"+REPO+"/contents"+path,{method:"PUT",headers:hdr(),body:JSON.stringify(body)});
+    })
+    .then(function(r){if(!r.ok)throw new Error("Falha ao salvar post");return r})
+    .then(function(){
+        // Update posts.json
+        var idx=posts.findIndex(function(p){return p.slug===slug});
+        var entry={title:title,slug:slug,date:date,url:"/"+date.replace(/-/g,"/")+"/"+slug+"/",tags:tags,thumb:thumb};
+        if(idx>=0)posts[idx]=entry;else posts.unshift(entry);
+        return fetch("https://api.github.com/repos/"+REPO+"/contents/js/posts.json?ref="+BRANCH,{headers:hdr()})
+    })
+    .then(function(r){return r.json()})
+    .then(function(d){
+        var b64=btoa(unescape(encodeURIComponent(JSON.stringify(posts,null,0))));
+        return fetch("https://api.github.com/repos/"+REPO+"/contents/js/posts.json",{method:"PUT",headers:hdr(),body:JSON.stringify({message:"Update posts.json",content:b64,sha:d.sha,branch:BRANCH})});
+    })
+    .then(function(){showStatus("Publicado com sucesso!","success");loadPosts();clearEditor();switchTab("posts")})
+    .catch(function(e){showStatus("Erro: "+e.message,"error")});
+}
+
+function deletePost(i){
+    if(!confirm("Excluir: "+posts[i].title+"?"))return;
+    showStatus("Excluindo...","loading");
+    var p=posts[i];
+    var path="/"+p.date.replace(/-/g,"/")+"/"+p.slug+"/index.html";
+
+    fetch("https://api.github.com/repos/"+REPO+"/contents"+path+"?ref="+BRANCH,{headers:hdr()})
+    .then(function(r){return r.json()})
+    .then(function(d){
+        return fetch("https://api.github.com/repos/"+REPO+"/contents"+path,{method:"DELETE",headers:hdr(),body:JSON.stringify({message:"Delete: "+p.title,sha:d.sha,branch:BRANCH})});
+    })
+    .then(function(){
+        posts.splice(i,1);
+        return fetch("https://api.github.com/repos/"+REPO+"/contents/js/posts.json?ref="+BRANCH,{headers:hdr()});
+    })
+    .then(function(r){return r.json()})
+    .then(function(d){
+        var b64=btoa(unescape(encodeURIComponent(JSON.stringify(posts,null,0))));
+        return fetch("https://api.github.com/repos/"+REPO+"/contents/js/posts.json",{method:"PUT",headers:hdr(),body:JSON.stringify({message:"Update posts.json",content:b64,sha:d.sha,branch:BRANCH})});
+    })
+    .then(function(){showStatus("Excluido!","success");loadPosts()})
+    .catch(function(e){showStatus("Erro: "+e.message,"error")});
+}
+
+function switchTab(name){
+    document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active")});
+    document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("active")});
+    document.querySelector(".tab:nth-child("+(name==="posts"?1:2)+")").classList.add("active");
+    document.getElementById("panel-"+name).classList.add("active");
+}
+
+function showStatus(msg,type){
+    var bar=document.getElementById("statusBar");
+    bar.textContent=msg;bar.className="status "+type;
+    if(type!=="loading")setTimeout(function(){bar.className="status";bar.style.display="none"},3000);
+}
+
+// Auto-login
+if(localStorage.getItem("gh_token")){
+    TOKEN=localStorage.getItem("gh_token");
+    document.getElementById("loginScreen").style.display="none";
+    document.getElementById("adminScreen").style.display="block";
+    loadPosts();
+}
+</script>
+</body>
+</html>
