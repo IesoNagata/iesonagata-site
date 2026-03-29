@@ -20,7 +20,7 @@
     .admin{display:none}
     .admin-header{background:#161b22;border-bottom:1px solid #30363d;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
     .admin-header h1{font-size:1.1rem;color:#f0f6fc}
-    .admin-container{max-width:900px;margin:2rem auto;padding:0 1rem}
+    .admin-container{max-width:960px;margin:2rem auto;padding:0 1rem}
     .post-list{margin-bottom:2rem}
     .post-item{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1rem;margin-bottom:.5rem;display:flex;justify-content:space-between;align-items:center}
     .post-item .title{color:#f0f6fc;font-size:.9rem}
@@ -30,9 +30,8 @@
     .editor h2{margin-bottom:1rem;color:#f0f6fc}
     .form-group{margin-bottom:1rem}
     .form-group label{display:block;color:#8b949e;font-size:.8rem;margin-bottom:.3rem;text-transform:uppercase}
-    .form-group input,.form-group textarea,.form-group select{width:100%;padding:.75rem;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e6edf3;font-size:.9rem;font-family:inherit}
-    .form-group textarea{min-height:300px;resize:vertical}
-    .form-group input:focus,.form-group textarea:focus{outline:none;border-color:#58a6ff}
+    .form-group input,.form-group select{width:100%;padding:.75rem;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e6edf3;font-size:.9rem;font-family:inherit}
+    .form-group input:focus{outline:none;border-color:#58a6ff}
     .form-row{display:flex;gap:1rem}
     .form-row .form-group{flex:1}
     .tag-input{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}
@@ -50,6 +49,33 @@
     .panel{display:none}
     .panel.active{display:block}
     .help{color:#8b949e;font-size:.75rem;margin-top:.25rem}
+    .toolbar{display:flex;flex-wrap:wrap;gap:2px;padding:.5rem;background:#21262d;border:1px solid #30363d;border-bottom:none;border-radius:6px 6px 0 0}
+    .toolbar button{background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e6edf3;padding:.4rem .7rem;cursor:pointer;font-size:.8rem;min-width:32px}
+    .toolbar button:hover{background:#30363d}
+    .toolbar button.active{background:#1f6feb;border-color:#1f6feb}
+    .toolbar select{background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e6edf3;padding:.3rem .5rem;font-size:.8rem;cursor:pointer}
+    .toolbar .sep{width:1px;background:#30363d;margin:0 .25rem}
+    .rte{min-height:350px;padding:1rem;background:#0d1117;border:1px solid #30363d;border-radius:0 0 6px 6px;color:#e6edf3;font-size:.95rem;line-height:1.7;outline:none;overflow-y:auto}
+    .rte:focus{border-color:#58a6ff}
+    .rte h1{font-size:1.6rem;color:#f0f6fc;margin:.5rem 0}
+    .rte h2{font-size:1.3rem;color:#f0f6fc;margin:.5rem 0}
+    .rte h3{font-size:1.1rem;color:#f0f6fc;margin:.5rem 0}
+    .rte p{margin:.5rem 0}
+    .rte a{color:#58a6ff}
+    .rte img{max-width:100%;border-radius:8px;margin:.5rem 0}
+    .rte blockquote{border-left:3px solid #58a6ff;padding-left:1rem;color:#8b949e;margin:.5rem 0}
+    .rte pre{background:#161b22;padding:1rem;border-radius:6px;overflow-x:auto;margin:.5rem 0}
+    .rte code{background:#161b22;padding:.1rem .3rem;border-radius:3px;font-size:.85em}
+    .rte pre code{background:none;padding:0}
+    .rte ul,.rte ol{margin:.5rem 0 .5rem 1.5rem}
+    .rte hr{border:none;border-top:1px solid #30363d;margin:1rem 0}
+    .link-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center}
+    .link-modal.show{display:flex}
+    .link-modal-box{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:1.5rem;width:420px}
+    .link-modal-box h3{margin-bottom:1rem;color:#f0f6fc}
+    .link-modal-box input{width:100%;padding:.75rem;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e6edf3;font-size:.9rem;margin-bottom:.5rem}
+    .link-modal-box input:focus{outline:none;border-color:#58a6ff}
+    .link-modal-box .actions{display:flex;gap:.5rem;justify-content:flex-end;margin-top:.75rem}
     </style>
 </head>
 <body>
@@ -107,8 +133,37 @@
                     <div id="tagPreview" class="tag-input"></div>
                 </div>
                 <div class="form-group">
-                    <label>Conteudo (HTML)</label>
-                    <textarea id="postContent" placeholder="<p>Conteudo da postagem...</p>"></textarea>
+                    <label>Conteudo</label>
+                    <div class="toolbar">
+                        <select onchange="execFormat(this.value);this.selectedIndex=0" title="Formato">
+                            <option value="">Formato</option>
+                            <option value="p">Paragrafo</option>
+                            <option value="h1">Titulo H1</option>
+                            <option value="h2">Titulo H2</option>
+                            <option value="h3">Titulo H3</option>
+                        </select>
+                        <div class="sep"></div>
+                        <button onclick="execCmd('bold')" title="Negrito"><b>B</b></button>
+                        <button onclick="execCmd('italic')" title="Italico"><i>I</i></button>
+                        <button onclick="execCmd('underline')" title="Sublinhado"><u>U</u></button>
+                        <button onclick="execCmd('strikeThrough')" title="Riscado"><s>S</s></button>
+                        <div class="sep"></div>
+                        <button onclick="execCmd('insertUnorderedList')" title="Lista">&#8226; Lista</button>
+                        <button onclick="execCmd('insertOrderedList')" title="Lista numerada">1. Lista</button>
+                        <div class="sep"></div>
+                        <button onclick="showLinkModal()" title="Link">&#128279;</button>
+                        <button onclick="insertImage()" title="Imagem">&#128247;</button>
+                        <button onclick="execCmd('insertHorizontalRule')" title="Linha horizontal">&#8213;</button>
+                        <div class="sep"></div>
+                        <button onclick="execCmd('formatBlock','blockquote')" title="Citacao">&#10077;</button>
+                        <button onclick="insertCode()" title="Codigo">&#60;/&#62;</button>
+                        <div class="sep"></div>
+                        <button onclick="execCmd('undo')" title="Desfazer">&#8617;</button>
+                        <button onclick="execCmd('redo')" title="Refazer">&#8618;</button>
+                    </div>
+                    <div id="rte" class="rte" contenteditable="true">
+                        <p>Escreva seu conteudo aqui...</p>
+                    </div>
                 </div>
                 <div class="editor-actions">
                     <button class="btn btn-primary" onclick="savePost()">&#128190; Publicar</button>
@@ -119,10 +174,22 @@
     </div>
 </div>
 
+<div id="linkModal" class="link-modal">
+    <div class="link-modal-box">
+        <h3>Inserir Link</h3>
+        <input type="text" id="linkUrl" placeholder="https://exemplo.com">
+        <input type="text" id="linkText" placeholder="Texto do link (opcional)">
+        <div class="actions">
+            <button class="btn btn-secondary" onclick="closeLinkModal()">Cancelar</button>
+            <button class="btn btn-primary" onclick="insertLink()">Inserir</button>
+        </div>
+    </div>
+</div>
+
 <div id="statusBar" class="status"></div>
 
 <script>
-var TOKEN="",REPO="IesoNagata/iesonagata-site",BRANCH="master",posts=[];
+var TOKEN="",REPO="IesoNagata/iesonagata-site",BRANCH="master",posts=[],savedSelection=null;
 
 function login(){
     TOKEN=document.getElementById("tokenInput").value.trim();
@@ -154,10 +221,7 @@ function renderPosts(){
     document.getElementById("postList").innerHTML=html||"<p>Nenhuma postagem.</p>";
 }
 
-function showEditor(i){
-    switchTab("editor");
-    if(i===undefined){clearEditor();return}
-}
+function showEditor(){switchTab("editor");clearEditor()}
 
 function editPost(i){
     var p=posts[i];
@@ -172,8 +236,12 @@ function editPost(i){
     var url="/"+p.date.replace(/-/g,"/")+"/"+p.slug+"/index.html";
     fetch("https://api.github.com/repos/"+REPO+"/contents"+url+"?ref="+BRANCH,{headers:hdr()})
     .then(function(r){return r.json()})
-    .then(function(d){document.getElementById("postContent").value=decodeURIComponent(escape(atob(d.content)))})
-    .catch(function(){document.getElementById("postContent").value=""});
+    .then(function(d){
+        var full=decodeURIComponent(escape(atob(d.content)));
+        var m=full.match(/<div class="entry-content">\s*([\s\S]*?)\s*<\/div>/);
+        if(m)document.getElementById("rte").innerHTML=m[1];
+    })
+    .catch(function(){});
 }
 
 function clearEditor(){
@@ -182,7 +250,7 @@ function clearEditor(){
     document.getElementById("postDate").value=new Date().toISOString().slice(0,10);
     document.getElementById("postThumb").value="";
     document.getElementById("postTags").value="";
-    document.getElementById("postContent").value="";
+    document.getElementById("rte").innerHTML="<p>Escreva seu conteudo aqui...</p>";
     document.getElementById("editorTitle").textContent="Nova Postagem";
     document.getElementById("tagPreview").innerHTML="";
 }
@@ -196,6 +264,67 @@ function updateTagPreview(){
 
 document.getElementById("postTags").addEventListener("input",updateTagPreview);
 
+// RTE commands
+function execCmd(cmd,val){document.execCommand(cmd,false,val||null);document.getElementById("rte").focus()}
+
+function execFormat(tag){
+    if(!tag)return;
+    document.execCommand("formatBlock",false,tag);
+    document.getElementById("rte").focus();
+}
+
+function saveSelection(){
+    var sel=window.getSelection();
+    if(sel.rangeCount>0)savedSelection=sel.getRangeAt(0).cloneRange();
+}
+
+function restoreSelection(){
+    if(savedSelection){var sel=window.getSelection();sel.removeAllRanges();sel.addRange(savedSelection)}
+}
+
+function showLinkModal(){
+    saveSelection();
+    document.getElementById("linkUrl").value="";
+    document.getElementById("linkText").value="";
+    document.getElementById("linkModal").classList.add("show");
+    document.getElementById("linkUrl").focus();
+}
+
+function closeLinkModal(){document.getElementById("linkModal").classList.remove("show")}
+
+function insertLink(){
+    var url=document.getElementById("linkUrl").value.trim();
+    var txt=document.getElementById("linkText").value.trim();
+    if(!url)return;
+    closeLinkModal();
+    restoreSelection();
+    if(txt){document.execCommand("insertHTML",false,'<a href="'+url+'">'+txt+'</a>')}
+    else{document.execCommand("createLink",false,url)}
+    document.getElementById("rte").focus();
+}
+
+function insertImage(){
+    var url=prompt("URL da imagem:");
+    if(!url)return;
+    document.execCommand("insertHTML",false,'<img src="'+url+'" alt="" style="max-width:100%;border-radius:8px">');
+    document.getElementById("rte").focus();
+}
+
+function insertCode(){
+    var code=prompt("Codigo:");
+    if(!code)return;
+    document.execCommand("insertHTML",false,'<pre><code>'+code.replace(/</g,"&lt;").replace(/>/g,"&gt;")+'</code></pre>');
+    document.getElementById("rte").focus();
+}
+
+document.getElementById("rte").addEventListener("paste",function(e){
+    e.preventDefault();
+    var text=(e.clipboardData||window.clipboardData).getData("text/html")||(e.clipboardData||window.clipboardData).getData("text/plain");
+    if(text.indexOf("<")===-1)text=text.replace(/\n/g,"<br>");
+    document.execCommand("insertHTML",false,text);
+});
+
+// Slugify
 function slugify(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
 
 function makePostHTML(title,date,content,tags){
@@ -208,7 +337,7 @@ function savePost(){
     var date=document.getElementById("postDate").value;
     var thumb=document.getElementById("postThumb").value.trim();
     var tags=document.getElementById("postTags").value.split(",").map(function(t){return t.trim()}).filter(Boolean);
-    var content=document.getElementById("postContent").value;
+    var content=document.getElementById("rte").innerHTML;
     var slug=document.getElementById("editSlug").value||slugify(title);
 
     if(!title||!date)return showStatus("Titulo e data obrigatorios","error");
@@ -219,7 +348,6 @@ function savePost(){
     var html=makePostHTML(title,date,content,tags);
     var b64=btoa(unescape(encodeURIComponent(html)));
 
-    // Get existing file SHA if editing
     fetch("https://api.github.com/repos/"+REPO+"/contents"+path+"?ref="+BRANCH,{headers:hdr()})
     .then(function(r){return r.ok?r.json():null})
     .then(function(existing){
@@ -229,11 +357,10 @@ function savePost(){
     })
     .then(function(r){if(!r.ok)throw new Error("Falha ao salvar post");return r})
     .then(function(){
-        // Update posts.json
         var idx=posts.findIndex(function(p){return p.slug===slug});
         var entry={title:title,slug:slug,date:date,url:"/"+date.replace(/-/g,"/")+"/"+slug+"/",tags:tags,thumb:thumb};
         if(idx>=0)posts[idx]=entry;else posts.unshift(entry);
-        return fetch("https://api.github.com/repos/"+REPO+"/contents/js/posts.json?ref="+BRANCH,{headers:hdr()})
+        return fetch("https://api.github.com/repos/"+REPO+"/contents/js/posts.json?ref="+BRANCH,{headers:hdr()});
     })
     .then(function(r){return r.json()})
     .then(function(d){
@@ -281,7 +408,6 @@ function showStatus(msg,type){
     if(type!=="loading")setTimeout(function(){bar.className="status";bar.style.display="none"},3000);
 }
 
-// Auto-login
 if(localStorage.getItem("gh_token")){
     TOKEN=localStorage.getItem("gh_token");
     document.getElementById("loginScreen").style.display="none";
