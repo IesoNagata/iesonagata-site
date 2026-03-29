@@ -37,7 +37,7 @@ th+='<a href="'+base+'tags/?tag='+encodeURIComponent(k)+'" class="tag-link">'+ta
 tc.innerHTML=th;
 }
 });
-var rssUrl=encodeURIComponent("https://news.google.com/rss/topics/CAAqLAgKIiZDQkFTRmdvSkwyMHZNR1ptZHpWbUVnVndkQzFDVWhvQ1FsSW9BQVAB?hl=pt-BR&gl=BR&ceid=BR:pt-419");
+var rssUrl=encodeURIComponent("https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtVnVHZ0pWVXlnQVAB?hl=pt-BR&gl=BR&ceid=BR:pt-419");
 fetch("https://api.rss2json.com/v1/api.json?rss_url="+rssUrl+"&count=10")
 .then(function(r){return r.json()})
 .then(function(data){
@@ -53,11 +53,11 @@ html+='<li><a href="'+l+'" target="_blank" rel="noopener">'+t+'</a></li>';
 }
 list.innerHTML=html;
 }else{
-list.innerHTML='<li><a href="https://news.google.com/topics/CAAqLAgKIiZDQkFTRmdvSkwyMHZNR1ptZHpWbUVnVndkQzFDVWhvQ1FsSW9BQVAB?hl=pt-BR&gl=BR&ceid=BR%3Apt-419" target="_blank" rel="noopener">Ver no Google News</a></li>';
+list.innerHTML='<li><a href="https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtVnVHZ0pWVXlnQVAB?hl=pt-BR&gl=BR&ceid=BR%3Apt-419" target="_blank" rel="noopener">Ver no Google News</a></li>';
 }
 })
 .catch(function(){
 var list=document.getElementById("tech-news-list");
-if(list)list.innerHTML='<li><a href="https://news.google.com/topics/CAAqLAgKIiZDQkFTRmdvSkwyMHZNR1ptZHpWbUVnVndkQzFDVWhvQ1FsSW9BQVAB?hl=pt-BR&gl=BR&ceid=BR%3Apt-419" target="_blank" rel="noopener">Ver no Google News</a></li>';
+if(list)list.innerHTML='<li><a href="https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtVnVHZ0pWVXlnQVAB?hl=pt-BR&gl=BR&ceid=BR%3Apt-419" target="_blank" rel="noopener">Ver no Google News</a></li>';
 });
 })();
