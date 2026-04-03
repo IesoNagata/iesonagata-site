@@ -21,11 +21,13 @@
     }
     .post-iframe {
         width: 100%;
-        height: auto;
-        min-height: 70vh;
+        height: 100%;
+        min-height: 80vh;
         border: none;
         background: var(--bg-card);
-        display: block;
+    }
+    embed::-webkit-scrollbar {
+        display: none;
     }
     </style>
 </head>
@@ -56,7 +58,7 @@
         <div class="sidebar sidebar-left" id="sidebar-left"></div>
 
         <div class="post-iframe-container">
-            <iframe id="post-frame" class="post-iframe" src="about:blank"></iframe>
+            <embed id="post-frame" class="post-iframe" src="about:blank" type="text/html"></embed>
         </div>
 
         <div class="sidebar sidebar-right" id="sidebar-right"></div>
@@ -74,18 +76,9 @@
 (function(){
 var params=new URLSearchParams(location.search);
 var url=params.get("url");
-var frame=document.getElementById("post-frame");
+var embed=document.getElementById("post-frame");
 if(url){
-    frame.src=url;
-    frame.onload=function(){
-        try{
-            var doc=frame.contentDocument||frame.contentWindow.document;
-            var h=doc.body.scrollHeight;
-            if(h>400){
-                frame.style.height=h+"px";
-            }
-        }catch(e){}
-    };
+    embed.src=url;
 }else{
     location.href="/";
 }
