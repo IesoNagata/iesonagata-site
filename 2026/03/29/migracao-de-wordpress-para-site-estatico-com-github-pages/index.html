@@ -24,6 +24,17 @@
 </main>
 <footer class="site-footer"><div class="footer-inner"><p>&copy; 2026 Ieso Nagata. Todos os direitos reservados.</p></div></footer>
 </div>
-<script src="../../../../js/sidebar.js"></script>
+<script src="../../../../js/sidebar.js?v=6"></script>
+<script>
+if(window.self!==window.top){
+document.body.classList.add("in-iframe");
+document.querySelector(".site-header").style.display="none";
+document.querySelector(".sidebar-left").style.display="none";
+document.querySelector(".sidebar-right").style.display="none";
+document.querySelector(".site-footer").style.display="none";
+document.querySelector(".site-main").style.display="block";
+document.querySelector(".site-main").style.gridTemplateColumns="1fr";
+}
+</script>
 </body>
 </html>
