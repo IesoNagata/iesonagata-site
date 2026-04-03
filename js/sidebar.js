@@ -54,7 +54,7 @@ function updateServerStatus(){
     sw.innerHTML='<li><span class="offline-dot">OFFLINE</span></li>';
     return;
   }
-  var html='<li><span class="online-dot"></span> <strong>ONLINE</strong> ('+servers.length+')</li>';
+  var html='<li><span class="online-dot">●</span> <strong>ONLINE</strong> ('+servers.length+')</li>';
   servers.forEach(function(s){
     html+='<li class="server-item"><a href="https://www.battlemetrics.com/servers/reforger/'+s.id+'" target="_blank">'+s.name+'</a></li>';
   });
