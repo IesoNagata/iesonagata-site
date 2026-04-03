@@ -284,12 +284,7 @@ img {
 
 /* Server Widget */
 .server-widget .online-dot {
-    width: 6px;
-    height: 6px;
-    background: #3fb950;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 4px;
+    color: #3fb950;
 }
 .server-widget .offline-dot {
     color: var(--accent-red);
