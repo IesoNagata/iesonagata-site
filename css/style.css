@@ -282,6 +282,47 @@ img {
     flex-shrink: 0;
 }
 
+/* Server Widget */
+.server-widget {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.75rem;
+}
+.server-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.online-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--accent-green);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+.server-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+.server-info strong {
+    font-size: 0.8rem;
+    color: var(--text-primary);
+}
+.server-info span {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+.server-btn a {
+    font-size: 0.65rem;
+    color: var(--accent-blue);
+}
+
 /* Weather Widget */
 .weather-widget {
     background: var(--bg-card);
