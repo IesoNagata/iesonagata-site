@@ -47,8 +47,8 @@ function updateServerStatus(){
   var sw=document.getElementById("server-widget");
   if(!sw)return;
   var servers=[
-    {name:"[SP/BR] iesonagata.com.br | 666th Aeromad Company Brasil | support server",id:"38436429",scenario:"Support Server"},
-    {name:"666th Aeromad Company Brasil Oficial - Faircroft Islands Conflict PvE",id:"38381095",scenario:"Faircroft Islands Conflict PvE"}
+    {name:"[SP/BR] iesonagata.com.br | 666th Aeromad Company Brasil | support server",id:"38436429"},
+    {name:"666th Aeromad Company Brasil Oficial",id:"38381095"}
   ];
   if(servers.length===0){
     sw.innerHTML='<li><span class="offline-dot"></span> Não encontrados</li>';
@@ -56,7 +56,7 @@ function updateServerStatus(){
   }
   var html='<li><span class="online-dot"></span> <strong>ONLINE</strong> ('+servers.length+')</li>';
   servers.forEach(function(s){
-    html+='<li><a href="https://www.battlemetrics.com/servers/reforger/'+s.id+'" target="_blank">'+s.name+'</a><div class="server-scenario">'+s.scenario+'</div></li>';
+    html+='<li><a href="https://www.battlemetrics.com/servers/reforger/'+s.id+'" target="_blank">'+s.name+'</a><div class="server-scenario">Ver scenario no jogo</div></li>';
   });
   sw.innerHTML=html;
 }
