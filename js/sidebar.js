@@ -119,7 +119,7 @@ return;
 var tagObjs=Object.keys(tags).map(function(k){return{tag:tags[k],len:tags[k].length}});
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
 tagObjs=shuffle(tagObjs);
-var maxPerLine=26;
+var maxPerLine=32;
 var lines=[];
 var used=[];
 while(used.length<tagObjs.length){

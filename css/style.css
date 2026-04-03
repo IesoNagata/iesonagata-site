@@ -942,25 +942,20 @@ img {
 .tags-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 3px;
+    gap: 6px;
 }
 
 .tag-link {
     display: inline-block;
-    padding: 0.35rem 0.75rem;
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    font-size: 0.75rem;
-    color: var(--text-secondary);
+    padding: 0.2rem 0.4rem;
+    font-size: 0.7rem;
+    color: var(--accent-blue);
     text-decoration: none;
     transition: all 0.2s ease;
 }
 
 .tag-link:hover {
-    background: var(--accent-blue);
-    border-color: var(--accent-blue);
-    color: white;
+    color: var(--accent-primary);
 }
 
 .trending-list {
