@@ -1047,7 +1047,16 @@ img {
     color: var(--text-primary);
 }
 
-/* Responsive */
+/* Responsive - Mobile First */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
 @media (max-width: 1100px) {
     .site-main {
         grid-template-columns: 1fr 1fr;
@@ -1067,14 +1076,29 @@ img {
 }
 
 @media (max-width: 768px) {
+    .site-header {
+        position: relative;
+    }
+    
     .site-main {
         grid-template-columns: 1fr;
-        padding: 1.25rem;
+        padding: 0.75rem;
+        gap: 0.75rem;
     }
     
     .header-inner {
         flex-wrap: wrap;
-        gap: 0.75rem;
+        gap: 0.5rem;
+        padding: 0 0.75rem;
+    }
+    
+    .header-logo-icon {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .site-title {
+        font-size: 1rem;
     }
     
     .search-box {
@@ -1084,31 +1108,79 @@ img {
         width: 100%;
     }
     
+    .search-box input {
+        padding: 0.5rem 1rem 0.5rem 2rem;
+    }
+    
     .main-navigation {
         display: none;
     }
     
+    .sidebar-left, .sidebar-right {
+        display: none;
+    }
+    
+    .main-content {
+        grid-column: 1;
+    }
+    
     .posts-grid {
         grid-template-columns: 1fr;
+        gap: 0.75rem;
     }
     
-    .post-card-full {
-        flex-direction: column;
+    .hero {
+        margin-bottom: 1rem;
     }
     
-    .post-card-full .post-card-image {
-        width: 100%;
-        height: 200px;
+    .hero img {
+        height: 180px;
     }
     
     .hero-title {
-        font-size: 1.35rem;
+        font-size: 1.2rem;
+    }
+    
+    .hero-label {
+        font-size: 0.6rem;
+        padding: 0.2rem 0.5rem;
+    }
+    
+    .post-card {
+        border-radius: 8px;
+    }
+    
+    .post-card-image {
+        height: 140px;
+    }
+    
+    .post-card-content {
+        padding: 0.75rem;
+    }
+    
+    .post-card-title {
+        font-size: 0.9rem;
+    }
+    
+    .single-post .post-card-image {
+        height: 200px;
+    }
+    
+    .post-iframe-container, .post-iframe {
+        min-height: auto;
+        height: calc(100vh - 120px);
+        border-radius: 0;
+    }
+    
+    .site-footer {
+        padding: 1.5rem;
+        margin-top: 2rem;
     }
 }
 
 @media (max-width: 480px) {
     .header-inner {
-        padding: 0 1rem;
+        padding: 0 0.5rem;
     }
     
     .sidebar-left {
