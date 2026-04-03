@@ -54,7 +54,7 @@
     </footer>
 </div>
 
-<script src="../js/sidebar.js?v=21"></script>
+<script src="../js/sidebar.js?v=22"></script>
 <script>
 (function(){
 var params=new URLSearchParams(location.search);
@@ -76,11 +76,11 @@ if(!filtered.length){
 }
 var html="";
 var fmtDate=function(d){return d.split("-").reverse().join("/")};
-var baseUrl=location.pathname.replace(/\/[^\/]*$/,"");
+var baseUrl="/";
 var postUrl=function(url){
     if(!url)return"#";
     if(url.indexOf("http")===0)return url;
-    return baseUrl+"/post.html?url="+encodeURIComponent(url);
+    return baseUrl+"post.html?url="+encodeURIComponent(url);
 };
 var fixUrl=function(u){
     if(!u)return"";
