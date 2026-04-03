@@ -935,8 +935,14 @@ img {
 /* Tags Widget */
 .tags-cloud {
     display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tags-row {
+    display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 3px;
 }
 
 .tag-link {

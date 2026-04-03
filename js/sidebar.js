@@ -110,19 +110,31 @@ tagObjs=shuffle(tagObjs);
 var maxPerLine=26;
 var lines=[];
 var used=[];
+while(used.length<tagObjs.length){
 var line=[];
 var lineLen=0;
 for(var i=0;i<tagObjs.length;i++){
 if(used.indexOf(i)!==-1)continue;
 var t=tagObjs[i];
 var nextLen=lineLen+t.len+(line.length?1:0);
-if(line.length===0||nextLen<=maxPerLine){line.push(i);lineLen=nextLen;used.push(i);}
-else{lines.push(line);line=[i];lineLen=t.len;used.push(i);}
-if(i===tagObjs.length-1&&line.length){lines.push(line);}
+if(nextLen<=maxPerLine){
+line.push(i);
+lineLen=nextLen;
+used.push(i);
+}
+}
+if(line.length===0)break;
+if(line.length===1){
+var t=tagObjs[line[0]];
+if(t.len<=12&&used.length+1<tagObjs.length){
+continue;
+}
+}
+lines.push(line);
 }
 var th="";
 lines.forEach(function(line){
-th+='<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px">';
+th+='<div class="tags-row">';
 line.forEach(function(idx){
 var t=tagObjs[idx];
 th+='<a href="'+base+'tags/?tag='+encodeURIComponent(t.tag.toLowerCase())+'" class="tag-link">'+t.tag+'</a>';
