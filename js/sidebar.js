@@ -3,7 +3,7 @@ var scripts=document.getElementsByTagName("script");
 var last=scripts[scripts.length-1];
 var src=last.getAttribute("src")||"";
 var base=src.replace(/\?.*$/,"").replace(/js\/sidebar\.js$/,"");
-var leftHTML='<div class="sidebar-section"><h3 class="sidebar-title">Servidor ARMA</h3><div class="server-widget" id="server-widget"><div class="server-status loading">Verificando...</div></div></div><div class="sidebar-section"><h3 class="sidebar-title">Categorias</h3><ul class="sidebar-menu" id="categories-list"><li>Carregando...</li></ul></div><div class="sidebar-section"><h3 class="sidebar-title">Tech News</h3><ul class="sidebar-menu" id="tech-news-list"><li>Carregando...</li></ul></div>';
+var leftHTML='<div class="sidebar-section"><h3 class="sidebar-title">Servidor ARMA</h3><ul class="sidebar-menu server-widget" id="server-widget"><li>Carregando...</li></ul></div><div class="sidebar-section"><h3 class="sidebar-title">Categorias</h3><ul class="sidebar-menu" id="categories-list"><li>Carregando...</li></ul></div><div class="sidebar-section"><h3 class="sidebar-title">Tech News</h3><ul class="sidebar-menu" id="tech-news-list"><li>Carregando...</li></ul></div>';
 var rightStatic='<div class="trending-section"><h3 class="sidebar-title">Postagens</h3><ol class="trending-list" id="posts-list"><li>Carregando...</li></ol></div><div class="trending-section"><h3 class="sidebar-title">Tags</h3><div class="tags-cloud" id="tags-cloud"></div></div><div class="trending-section"><h3 class="sidebar-title">Siga-nos</h3><ul class="sidebar-menu social-menu"><li><a href="https://www.facebook.com/IesoNagata" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#1877f2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg> Facebook</a></li><li><a href="https://www.youtube.com/@iesonagata" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#ff0000"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="#fff"/></svg> YouTube</a></li><li><a href="https://www.instagram.com/iesonagata/" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e4405f" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="#e4405f"/></svg> Instagram</a></li></ul></div>';
 var l=document.getElementById("sidebar-left");
 if(l)l.innerHTML=leftHTML;
@@ -47,12 +47,12 @@ function updateServerStatus(){
   var sw=document.getElementById("server-widget");
   if(!sw)return;
   var servers=[
-    {name:"[SP/BR] iesonagata.com.br | 666th Aeromad Company Brasil | support server",id:"38436429",scenario:"Support Server"},
+    {name:"[SP/BR] iesonagata.com.br | 666th Aeromad Company | support server",id:"38436429",scenario:"Support Server"},
     {name:"666th Aeromad Company Brasil Oficial",id:"38381095",scenario:"Faircroft Islands Conflict PvE"}
   ];
-  var html='<div class="server-header"><span class="online-dot"></span>Online</div>';
+  var html='<li><span class="online-dot"></span> <strong>666th Aeromad</strong> ('+servers.length+' online)</li>';
   servers.forEach(function(s){
-    html+='<div class="server-item"><div class="server-name"><strong>'+s.name+'</strong></div><div class="server-scenario">'+s.scenario+'</div><a href="https://www.battlemetrics.com/servers/reforger/'+s.id+'" class="server-link" target="_blank">BattleMetrics</a></div>';
+    html+='<li><a href="https://www.battlemetrics.com/servers/reforger/'+s.id+'" target="_blank">'+s.scenario+'</a></li>';
   });
   sw.innerHTML=html;
 }
