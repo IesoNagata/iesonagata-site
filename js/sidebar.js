@@ -13,14 +13,8 @@ if(r)r.innerHTML=rightStatic;
 function updateServerStatus(){
   var sw=document.getElementById("server-widget");
   if(!sw)return;
-  var servers=[
-    {name:"666th Aeromad | Support Server",id:"38436429"},
-    {name:"666th Aeromad | Oficial PvE",id:"38381095"}
-  ];
-  var html='<li style="color:var(--text-muted);font-size:0.7rem">Verifique online no BattleMetrics</li>';
-  servers.forEach(function(s){
-    html+='<li class="server-item"><a href="https://www.battlemetrics.com/servers/reforger/'+s.id+'" target="_blank">'+s.name+'</a></li>';
-  });
+  var html='<li style="color:var(--text-muted);font-size:0.7rem">Verifique online</li>';
+  html+='<li class="server-item"><a href="https://www.battlemetrics.com/servers/reforger?search=aeromad" target="_blank">Buscar 666th Aeromad</a></li>';
   sw.innerHTML=html;
 }
 updateServerStatus();
