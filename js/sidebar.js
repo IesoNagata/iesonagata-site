@@ -46,7 +46,15 @@ function updateWeather(code,temp,name){
 function updateServerStatus(){
   var sw=document.getElementById("server-widget");
   if(!sw)return;
-  sw.innerHTML='<div class="server-status"><span class="online-dot"></span><div class="server-info"><strong>666th Aeromad Company</strong><span>iesonagata.com.br:2001</span><span class="server-btn"><a href="https://www.battlemetrics.com/servers/reforger/38436429" target="_blank">Ver no BattleMetrics</a></span></div></div>';
+  var servers=[
+    {name:"[SP/BR] iesonagata.com.br | 666th Aeromad Company Brasil | support server",id:"38436429"},
+    {name:"666th Aeromad Company Brasil Oficial - Faircroft Islands Conflict PvE",id:"38381095"}
+  ];
+  var html="";
+  servers.forEach(function(s){
+    html+='<div class="server-status"><span class="online-dot"></span><div class="server-info"><strong>'+s.name+'</strong><span class="server-btn"><a href="https://www.battlemetrics.com/servers/reforger/'+s.id+'" target="_blank">BattleMetrics</a></span></div></div>';
+  });
+  sw.innerHTML=html;
 }
 updateServerStatus();
 
