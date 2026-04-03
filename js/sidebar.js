@@ -14,8 +14,8 @@ function updateServerStatus(){
   var sw=document.getElementById("server-widget");
   if(!sw)return;
   var servers=[
-    {name:"[SP/BR] iesonagata.com.br | 666th Aeromad Company Brasil | support server",id:"38436429"},
-    {name:"666th Aeromad Company Brasil Oficial",id:"38381095"}
+    {name:"[SP/BR] iesonagata.com.br | 666th Aeromad Company Brasil | support server",id:"38346193"},
+    {name:"666th Aeromad Company Brasil Oficial - Faircroft Islands",id:"38381095"}
   ];
   if(servers.length===0){
     sw.innerHTML='<li class="offline-text"> NÃO ENCONTRADOS</li>';
