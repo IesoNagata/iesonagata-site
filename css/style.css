@@ -295,12 +295,6 @@ img {
     color: var(--accent-red);
     font-size: 0.7rem;
 }
-.sidebar-section .server-widget {
-    background: var(--bg-card) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: var(--radius-md) !important;
-    padding: 1.25rem !important;
-}
 .server-widget .server-item {
     border-top: 1px solid var(--border-light);
     padding-top: 0.35rem;
