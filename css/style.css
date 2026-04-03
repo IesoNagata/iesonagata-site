@@ -284,13 +284,12 @@ img {
 
 /* Server Widget */
 .server-widget .online-dot {
-    width: 8px;
-    min-width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     background: #3fb950;
     border-radius: 50%;
     display: inline-block;
-    vertical-align: middle;
+    margin-right: 4px;
 }
 .server-widget .offline-dot {
     color: var(--accent-red);
