@@ -51,10 +51,10 @@ function updateServerStatus(){
     {name:"666th Aeromad Company Brasil Oficial",id:"38381095"}
   ];
   if(servers.length===0){
-    sw.innerHTML='<li><span class="offline-dot">OFFLINE</span></li>';
+    sw.innerHTML='<li class="offline-text"> NÃO ENCONTRADOS</li>';
     return;
   }
-  var html='<li><span class="online-dot">●</span> <strong>ONLINE</strong> ('+servers.length+')</li>';
+  var html='<li class="online-text">ONLINE ('+servers.length+')</li>';
   servers.forEach(function(s){
     html+='<li class="server-item"><a href="https://www.battlemetrics.com/servers/reforger/'+s.id+'" target="_blank">'+s.name+'</a></li>';
   });
