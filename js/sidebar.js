@@ -128,6 +128,7 @@ var t=tagObjs[idx];
 th+='<a href="'+base+'tags/?tag='+encodeURIComponent(t.tag.toLowerCase())+'" class="tag-link">'+t.tag+'</a>';
 });
 th+='</div>';
+});
 tc.innerHTML=th;
 }
 };
