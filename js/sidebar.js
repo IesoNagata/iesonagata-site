@@ -123,14 +123,11 @@ if(i===tagObjs.length-1&&line.length){lines.push(line);}
 var th="";
 lines.forEach(function(line){
 th+='<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px">';
-var pct=Math.round(lineLen/maxPerLine*100);
 line.forEach(function(idx){
 var t=tagObjs[idx];
 th+='<a href="'+base+'tags/?tag='+encodeURIComponent(t.tag.toLowerCase())+'" class="tag-link">'+t.tag+'</a>';
 });
-th+='<span style="color:var(--text-muted);font-size:0.6rem;margin-left:auto">'+pct+'%</span>';
 th+='</div>';
-});
 tc.innerHTML=th;
 }
 };
