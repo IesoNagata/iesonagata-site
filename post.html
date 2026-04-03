@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="content/themes/google/favicon.png" sizes="32x32">
+    <title>Postagem - Ieso Nagata</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+    .post-iframe-container {
+        grid-column: 2;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        min-height: 70vh;
+    }
+    .post-iframe {
+        width: 100%;
+        height: 70vh;
+        border: none;
+        background: var(--bg-card);
+    }
+    </style>
+</head>
+<body>
+<div id="page" class="site">
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="/" class="header-logo">
+                <div class="header-logo-icon">IN</div>
+                <span class="site-title">Ieso Nagata</span>
+            </a>
+            <div class="search-box">
+                <form role="search" method="get" action="/">
+                    <span class="search-icon">&#128269;</span>
+                    <input type="search" name="s" placeholder="Pesquisar por ..." value="">
+                </form>
+            </div>
+            <nav class="main-navigation">
+                <ul>
+                    <li><a href="/">Início</a></li>
+                    <li><a href="/about/">Sobre</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="site-main">
+        <div class="sidebar sidebar-left" id="sidebar-left"></div>
+
+        <div class="post-iframe-container">
+            <iframe id="post-frame" class="post-iframe" src="about:blank"></iframe>
+        </div>
+
+        <div class="sidebar sidebar-right" id="sidebar-right"></div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p>&copy; 2026 Ieso Nagata. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</div>
+
+<script src="js/sidebar.js?v=6"></script>
+<script>
+(function(){
+var params=new URLSearchParams(location.search);
+var url=params.get("url");
+if(url){
+    document.getElementById("post-frame").src=url;
+}else{
+    location.href="/";
+}
+})();
+</script>
+</body>
+</html>

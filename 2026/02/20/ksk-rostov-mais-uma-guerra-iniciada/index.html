@@ -78,5 +78,16 @@
 </div>
 
 <script src="../../../../js/sidebar.js?v=6"></script>
+<script>
+if(window.self!==window.top){
+document.body.classList.add("in-iframe");
+document.querySelector(".site-header").style.display="none";
+document.querySelector(".sidebar-left").style.display="none";
+document.querySelector(".sidebar-right").style.display="none";
+document.querySelector(".site-footer").style.display="none";
+document.querySelector(".site-main").style.display="block";
+document.querySelector(".site-main").style.gridTemplateColumns="1fr";
+}
+</script>
 </body>
 </html>

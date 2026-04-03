@@ -56,6 +56,12 @@
 <script src="js/sidebar.js?v=6"></script>
 <script>
 (function(){
+var baseUrl=location.pathname.replace(/\/[^\/]*$/,"");
+var postUrl=function(url){
+if(!url)return"#";
+if(url.indexOf("http")===0)return url;
+return baseUrl+"/post.html?url="+encodeURIComponent(url);
+};
 fetch("js/posts.json")
 .then(function(r){return r.json()})
 .then(function(posts){
@@ -70,20 +76,20 @@ return"/"+u.replace(/^\//,"");
 };
 var first=posts[0];
 h+='<div class="hero">';
-h+='<a href="'+first.url+'"><img src="'+fixUrl(first.thumb)+'" alt="'+first.title+'"></a>';
+h+='<a href="'+postUrl(first.url)+'"><img src="'+fixUrl(first.thumb)+'" alt="'+first.title+'"></a>';
 h+='<span class="hero-label">Destaque</span>';
 h+='<div class="hero-content">';
-h+='<h1 class="hero-title"><a href="'+first.url+'">'+first.title+'</a></h1>';
+h+='<h1 class="hero-title"><a href="'+postUrl(first.url)+'">'+first.title+'</a></h1>';
 h+='<div class="hero-meta"><span class="post-source"><span class="post-source-icon">IN</span>ieso nagata</span><span class="dot"></span><span class="post-date">'+fmtDate(first.date)+'</span></div>';
 h+='</div></div>';
 h+='<h2 class="section-title">Ultimas Noticias</h2>';
 h+='<div class="posts-grid">';
 posts.forEach(function(p){
 h+='<article class="post-card">';
-if(p.thumb)h+='<a href="'+p.url+'"><img src="'+fixUrl(p.thumb)+'" class="post-card-image" alt="'+p.title+'"></a>';
+if(p.thumb)h+='<a href="'+postUrl(p.url)+'"><img src="'+fixUrl(p.thumb)+'" class="post-card-image" alt="'+p.title+'"></a>';
 h+='<div class="post-card-content">';
 h+='<div class="post-card-source"><span class="post-card-source-icon">IN</span>ieso nagata</div>';
-h+='<h3 class="post-card-title"><a href="'+p.url+'">'+p.title+'</a></h3>';
+h+='<h3 class="post-card-title"><a href="'+postUrl(p.url)+'">'+p.title+'</a></h3>';
 h+='<div class="post-card-meta"><span class="post-date">'+fmtDate(p.date)+'</span></div>';
 h+='</div></article>';
 });

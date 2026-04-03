@@ -78,7 +78,7 @@ html+='<article class="post-card">';
 html+='<a href="'+p.url+'"><img src="../'+p.thumb+'" class="post-card-image" alt="'+p.title+'"></a>';
 html+='<div class="post-card-content">';
 html+='<div class="post-card-source"><span class="post-card-source-icon">IN</span>ieso nagata</div>';
-html+='<h3 class="post-card-title"><a href="'+p.url+'">'+p.title+'</a></h3>';
+html+='<h3 class="post-card-title"><a href="../post.html?url='+encodeURIComponent(p.url)+'">'+p.title+'</a></h3>';
 html+='<div class="post-card-meta"><span class="post-date">'+p.date.split("-").reverse().join("/")+'</span></div>';
 html+='</div></article>';
 });
@@ -90,5 +90,16 @@ tagPosts.innerHTML='<p style="color:var(--text-muted);">Erro ao carregar postage
 })();
 </script>
 <script src="../js/sidebar.js?v=6"></script>
+<script>
+if(window.self!==window.top){
+document.body.classList.add("in-iframe");
+document.querySelector(".site-header").style.display="none";
+document.querySelector(".sidebar-left").style.display="none";
+document.querySelector(".sidebar-right").style.display="none";
+document.querySelector(".site-footer").style.display="none";
+document.querySelector(".site-main").style.display="block";
+document.querySelector(".site-main").style.gridTemplateColumns="1fr";
+}
+</script>
 </body>
 </html>
