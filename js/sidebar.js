@@ -10,39 +10,6 @@ if(l)l.innerHTML=leftHTML;
 var r=document.getElementById("sidebar-right");
 if(r)r.innerHTML=rightStatic;
 
-var dias=["Domingo","Segunda-feira","Ter\u00e7a-feira","Quarta-feira","Quinta-feira","Sexta-feira","S\u00e1bado"];
-var meses=["janeiro","fevereiro","mar\u00e7o","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
-var wcodes={0:"C\u00e9u limpo",1:"Quase limpo",2:"Parcialmente nublado",3:"Nublado",45:"Nevoeiro",48:"Nevoeiro com geada",51:"Garoa leve",53:"Garoa",55:"Garoa forte",56:"Garoa gelada leve",57:"Garoa gelada",61:"Chuva leve",63:"Chuva",65:"Chuva forte",66:"Chuva gelada leve",67:"Chuva gelada forte",71:"Neve leve",73:"Neve",75:"Neve forte",77:"Granizo",80:"Pancadas leves",81:"Pancadas",82:"Pancadas fortes",85:"Nevasca leve",86:"Nevasca forte",95:"Tempestade",96:"Tempestade com granizo leve",99:"Tempestade com granizo forte"};
-var wicons={0:"&#9728;&#65039;",1:"&#9728;&#65039;",2:"&#9925;",3:"&#2601;&#65039;",45:"&#127787;&#65039;",48:"&#127787;&#65039;",51:"&#127783;&#65039;",53:"&#127783;&#65039;",55:"&#127783;&#65039;",56:"&#127783;&#65039;",57:"&#127783;&#65039;",61:"&#127783;&#65039;",63:"&#127783;&#65039;",65:"&#127783;&#65039;",66:"&#127783;&#65039;",67:"&#127783;&#65039;",71:"&#10052;&#65039;",73:"&#10052;&#65039;",75:"&#10052;&#65039;",77:"&#127783;&#65039;",80:"&#127783;&#65039;",81:"&#127783;&#65039;",82:"&#127783;&#65039;",85:"&#10052;&#65039;",86:"&#10052;&#65039;",95:"&#9928;&#65039;",96:"&#9928;&#65039;",99:"&#9928;&#65039;"};
-
-function updateTime(){
-  var el=document.getElementById("weather-time");
-  if(!el)return;
-  var now=new Date();
-  var d=dias[now.getDay()]+", "+now.getDate()+" de "+meses[now.getMonth()]+" de "+now.getFullYear();
-  var h=String(now.getHours()).padStart(2,"0");
-  var m=String(now.getMinutes()).padStart(2,"0");
-  var s=String(now.getSeconds()).padStart(2,"0");
-  el.innerHTML='<div class="weather-date">'+d+'</div><div class="weather-hour">'+h+":"+m+":"+s+'</div>';
-}
-updateTime();
-setInterval(updateTime,1000);
-
-function updateWeather(code,temp,name){
-  var c=document.getElementById("weather-content");
-  if(!c)return;
-  var icon=c.querySelector(".weather-icon");
-  var tmp=c.querySelector(".weather-temp");
-  var cond=c.querySelector(".weather-condition");
-  if(icon)icon.innerHTML=wicons[code]||"&#9728;&#65039;";
-  if(tmp)tmp.innerHTML=Math.round(temp)+"&deg;C";
-  if(cond)cond.textContent=wcodes[code]||"Indispon\u00edvel";
-  var loc=document.createElement("div");
-  loc.className="weather-location";
-  loc.textContent=name;
-  c.appendChild(loc);
-}
-
 function updateServerStatus(){
   var sw=document.getElementById("server-widget");
   if(!sw)return;
@@ -62,35 +29,6 @@ function updateServerStatus(){
 }
 updateServerStatus();
 
-function fetchWeather(lat,lon){
-  fetch("https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+"&current_weather=true")
-  .then(function(r){return r.json()})
-  .then(function(d){
-    if(d.current_weather){
-      var code=d.current_weather.weathercode;
-      var temp=d.current_weather.temperature;
-      fetch("https://nominatim.openstreetmap.org/reverse?format=json&lat="+lat+"&lon="+lon+"&accept-language=pt-BR")
-      .then(function(r){return r.json()})
-      .then(function(g){
-        var city=g.address.city||g.address.town||g.address.village||g.address.county||"";
-        var state=g.address.state||"";
-        var name=city+(state?", "+state:"");
-        updateWeather(code,temp,name);
-      })
-      .catch(function(){updateWeather(code,temp,"Localiza\u00e7\u00e3o desconhecida")});
-    }
-  })
-  .catch(function(){});
-}
-
-if(navigator.geolocation){
-  navigator.geolocation.getCurrentPosition(
-    function(pos){fetchWeather(pos.coords.latitude,pos.coords.longitude)},
-    function(){updateWeather(0,28,"S\u00e3o Paulo, SP")}
-  );
-}else{
-  updateWeather(0,28,"S\u00e3o Paulo, SP");
-}
 window.populateSidebarPosts=function(posts){
 var pl=document.getElementById("posts-list");
 if(pl){
