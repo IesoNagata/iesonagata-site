@@ -285,11 +285,12 @@ img {
 /* Server Widget */
 .server-widget .online-dot {
     width: 8px;
+    min-width: 8px;
     height: 8px;
-    background: var(--accent-green);
+    background: #3fb950;
     border-radius: 50%;
     display: inline-block;
-    animation: pulse 2s infinite;
+    vertical-align: middle;
 }
 .server-widget .offline-dot {
     color: var(--accent-red);
@@ -299,10 +300,6 @@ img {
     border-top: 1px solid var(--border-light);
     padding-top: 0.35rem;
     margin-top: 0.35rem;
-}
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
 }
 
 /* Weather Widget */
