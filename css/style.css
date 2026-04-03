@@ -292,16 +292,13 @@ img {
     animation: pulse 2s infinite;
 }
 .server-widget .offline-dot {
-    width: 8px;
-    height: 8px;
-    background: var(--accent-red);
-    border-radius: 50%;
-    display: inline-block;
+    color: var(--accent-red);
+    font-size: 0.7rem;
 }
-.server-widget .server-scenario {
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    margin-top: 0.15rem;
+.server-widget .server-item {
+    border-top: 1px solid var(--border-light);
+    padding-top: 0.35rem;
+    margin-top: 0.35rem;
 }
 @keyframes pulse {
     0%, 100% { opacity: 1; }
