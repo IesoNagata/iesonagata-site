@@ -284,11 +284,11 @@ img {
 
 /* Server Widget */
 .server-widget .online-text {
-    color: #3fb950;
+    color: #3fb950 !important;
     font-weight: 600;
 }
 .server-widget .offline-text {
-    color: #da3633;
+    color: #da3633 !important;
     font-weight: 600;
 }
 .server-widget .server-item {
