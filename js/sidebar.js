@@ -104,6 +104,18 @@ if(!tags[k])tags[k]=t;
 });
 var tc=document.getElementById("tags-cloud");
 if(tc){
+var cacheKey="tagsPacked_"+(base.replace(/\//g,"_"));
+var cached=localStorage.getItem(cacheKey);
+var postsHash=JSON.stringify(posts).length;
+if(cached){
+try{
+var data=JSON.parse(cached);
+if(data.hash===postsHash&&data.html){
+tc.innerHTML=data.html;
+return;
+}
+}catch(e){}
+}
 var tagObjs=Object.keys(tags).map(function(k){return{tag:tags[k],len:tags[k].length}});
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
 tagObjs=shuffle(tagObjs);
@@ -124,9 +136,9 @@ used.push(i);
 }
 }
 if(line.length===0)break;
-if(line.length===1){
+if(line.length===1&&tagObjs.length>1){
 var t=tagObjs[line[0]];
-if(t.len<=12&&used.length+1<tagObjs.length){
+if(t.len<=12){
 continue;
 }
 }
@@ -142,6 +154,7 @@ th+='<a href="'+base+'tags/?tag='+encodeURIComponent(t.tag.toLowerCase())+'" cla
 th+='</div>';
 });
 tc.innerHTML=th;
+localStorage.setItem(cacheKey,JSON.stringify({hash:postsHash,html:th}));
 }
 };
 fetch(base+"js/posts.json")
