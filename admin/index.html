@@ -130,6 +130,18 @@
                         <input type="date" id="postDate">
                     </div>
                     <div class="form-group">
+                        <label>Categoria</label>
+                        <select id="postCategoria">
+                            <option value="">Selecione...</option>
+                            <option value="Desenvolvimento">Desenvolvimento</option>
+                            <option value="Servidores de Jogos">Servidores de Jogos</option>
+                            <option value="Infraestrutura">Infraestrutura</option>
+                            <option value="Web/Blog">Web/Blog</option>
+                            <option value="ARMA Reforger">ARMA Reforger</option>
+                            <option value="IA">IA</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label>Tags (separadas por virgula)</label>
                         <input type="text" id="postTags" placeholder="arma reforger, games, linux">
                         <div id="tagPreview" class="tag-input"></div>
@@ -265,6 +277,7 @@ function editPost(i){
     document.getElementById("postDate").value=p.date;
     document.getElementById("postThumb").value=p.thumb||"";
     document.getElementById("postTags").value=(p.tags||[]).join(", ");
+    document.getElementById("postCategoria").value=p.categoria||"";
     document.getElementById("editorTitle").textContent="Editar: "+p.title;
     document.getElementById("rte").innerHTML="<p>Carregando...</p>";
     updateTagPreview();updateThumbPreview();
@@ -283,6 +296,7 @@ function clearEditor(){
     document.getElementById("postDate").value=new Date().toISOString().slice(0,10);
     document.getElementById("postThumb").value="";
     document.getElementById("postTags").value="";
+    document.getElementById("postCategoria").value="";
     document.getElementById("rte").innerHTML="<p>Escreva seu conteudo aqui...</p>";
     document.getElementById("editorTitle").textContent="Nova Postagem";
     document.getElementById("tagPreview").innerHTML="";
@@ -373,6 +387,7 @@ function savePost(){
     var date=document.getElementById("postDate").value;
     var thumb=document.getElementById("postThumb").value.trim();
     var tags=document.getElementById("postTags").value.split(",").map(function(t){return t.trim()}).filter(Boolean);
+    var categoria=document.getElementById("postCategoria").value;
     var content=document.getElementById("rte").innerHTML;
     var slug=document.getElementById("editSlug").value||slugify(title);
     if(!title){showStatus("Titulo obrigatorio","error");return}
@@ -385,7 +400,7 @@ function savePost(){
         return putFile(postPath,html,existing?existing.sha:null,(existing?"Edit":"New")+": "+title);
     }).then(function(){
         var idx=posts.findIndex(function(p){return p.slug===slug});
-        var entry={title:title,slug:slug,date:date,url:"/"+date.replace(/-/g,"/")+"/"+slug+"/",tags:tags,thumb:thumb};
+        var entry={title:title,slug:slug,date:date,url:"/"+date.replace(/-/g,"/")+"/"+slug+"/",tags:tags,categoria:categoria,thumb:thumb};
         if(idx>=0)posts[idx]=entry;else posts.unshift(entry);
         return getFile("js/posts.json");
     }).then(function(d){
