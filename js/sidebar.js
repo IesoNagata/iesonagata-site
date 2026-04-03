@@ -104,12 +104,29 @@ if(!tags[k])tags[k]=t;
 });
 var tc=document.getElementById("tags-cloud");
 if(tc){
-var tagArr=Object.keys(tags).map(function(k){return tags[k]});
+var tagKeys=Object.keys(tags);
+var tagArr=tagKeys.map(function(k){return tags[k]});
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;return a}
+function measureTag(t){var s=document.createElement("span");s.className="tag-link";s.style.position="absolute";s.style.visibility="hidden";s.textContent=t;tc.appendChild(s);var w=s.offsetWidth;tc.removeChild(s);return w}
+tagArr=shuffle(tagArr);
+var containerW=tc.offsetWidth||220;
+var gap=6;
+var lines=[];
+var currentLine=[];
+var currentW=0;
+for(var i=0;i<tagArr.length;i++){
+var t=tagArr[i];
+var w=measureTag(t)+(currentLine.length?gap:0);
+if(currentLine.length===0){currentLine=[t];currentW=w;}
+else if(currentW+w<containerW*0.85){currentLine.push(t);currentW+=w;}
+else{lines.push(currentLine);currentLine=[t];currentW=w}
+}
+if(currentLine.length)lines.push(currentLine);
 var th="";
-var lineLen=0;
-var maxPerLine=28;
-tagArr.forEach(function(t){
-th+='<a href="'+base+'tags/?tag='+encodeURIComponent(t.toLowerCase())+'" class="tag-link">'+t+'</a>';
+lines.forEach(function(line){
+th+='<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px">';
+line.forEach(function(t){th+='<a href="'+base+'tags/?tag='+encodeURIComponent(t.toLowerCase())+'" class="tag-link">'+t+'</a>'});
+th+='</div>';
 });
 tc.innerHTML=th;
 }
