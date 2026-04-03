@@ -104,28 +104,31 @@ if(!tags[k])tags[k]=t;
 });
 var tc=document.getElementById("tags-cloud");
 if(tc){
-var tagKeys=Object.keys(tags);
-var tagArr=tagKeys.map(function(k){return tags[k]});
-function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;return a}
-function measureTag(t){var s=document.createElement("span");s.className="tag-link";s.style.position="absolute";s.style.visibility="hidden";s.textContent=t;tc.appendChild(s);var w=s.offsetWidth;tc.removeChild(s);return w}
-tagArr=shuffle(tagArr);
-var containerW=tc.offsetWidth||220;
-var gap=6;
+var tagObjs=Object.keys(tags).map(function(k){return{tag:tags[k],len:tags[k].length}});
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+tagObjs=shuffle(tagObjs);
+var maxPerLine=26;
 var lines=[];
-var currentLine=[];
-var currentW=0;
-for(var i=0;i<tagArr.length;i++){
-var t=tagArr[i];
-var w=measureTag(t)+(currentLine.length?gap:0);
-if(currentLine.length===0){currentLine=[t];currentW=w;}
-else if(currentW+w<containerW*0.85){currentLine.push(t);currentW+=w;}
-else{lines.push(currentLine);currentLine=[t];currentW=w}
+var used=[];
+var line=[];
+var lineLen=0;
+for(var i=0;i<tagObjs.length;i++){
+if(used.indexOf(i)!==-1)continue;
+var t=tagObjs[i];
+var nextLen=lineLen+t.len+(line.length?1:0);
+if(line.length===0||nextLen<=maxPerLine){line.push(i);lineLen=nextLen;used.push(i);}
+else{lines.push(line);line=[i];lineLen=t.len;used.push(i);}
+if(i===tagObjs.length-1&&line.length){lines.push(line);}
 }
-if(currentLine.length)lines.push(currentLine);
 var th="";
 lines.forEach(function(line){
-th+='<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px">';
-line.forEach(function(t){th+='<a href="'+base+'tags/?tag='+encodeURIComponent(t.toLowerCase())+'" class="tag-link">'+t+'</a>'});
+th+='<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px">';
+var pct=Math.round(lineLen/maxPerLine*100);
+line.forEach(function(idx){
+var t=tagObjs[idx];
+th+='<a href="'+base+'tags/?tag='+encodeURIComponent(t.tag.toLowerCase())+'" class="tag-link">'+t.tag+'</a>';
+});
+th+='<span style="color:var(--text-muted);font-size:0.6rem;margin-left:auto">'+pct+'%</span>';
 th+='</div>';
 });
 tc.innerHTML=th;
